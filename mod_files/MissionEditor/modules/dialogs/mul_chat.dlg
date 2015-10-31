@@ -14,7 +14,7 @@ dialog = {
 								["bounds"] = {
 									[1] = {
 										["h"] = 18,
-										["w"] = 562,
+										["w"] = 416,
 										["x"] = 14,
 										["y"] = 43,
 									},
@@ -426,9 +426,9 @@ dialog = {
 						["bounds"] = {
 							[1] = {
 								["h"] = 149,
-								["w"] = 678,
+								["w"] = 502,
 								["x"] = 9,
-								["y"] = 534,
+								["y"] = 396,
 							},
 						},
 						["enabled"] = {
@@ -464,8 +464,8 @@ dialog = {
 					["params"] = {
 						["bounds"] = {
 							[1] = {
-								["h"] = 418,
-								["w"] = 632,
+								["h"] = 310,
+								["w"] = 468,
 								["x"] = 17,
 								["y"] = 39,
 							},
@@ -503,9 +503,9 @@ dialog = {
 					["params"] = {
 						["bounds"] = {
 							[1] = {
-								["h"] = 548,
+								["h"] = 406,
 								["w"] = 16,
-								["x"] = 688,
+								["x"] = 510,
 								["y"] = 10,
 							},
 						},
@@ -554,8 +554,8 @@ dialog = {
 			["params"] = {
 				["bounds"] = {
 					[1] = {
-						["h"] = 900,
-						["w"] = 720,
+						["h"] = 667,
+						["w"] = 533,
 						["x"] = 0,
 						["y"] = 55,
 					},
@@ -687,7 +687,7 @@ dialog = {
 										["vertAlign"] = {
 											["type"] = "min",
 										},
-										["fontSize"] = 24,
+										["fontSize"] = 18,
 									},
 								},
 							},
@@ -796,7 +796,7 @@ dialog = {
 										["vertAlign"] = {
 											["type"] = "min",
 										},
-										["fontSize"] = 24,
+										["fontSize"] = 18,
 									},
 								},
 							},
@@ -918,7 +918,7 @@ dialog = {
 										["vertAlign"] = {
 											["type"] = "min",
 										},
-										["fontSize"] = 24,
+										["fontSize"] = 18,
 									},
 								},
 							},
@@ -1053,7 +1053,7 @@ dialog = {
 										["vertAlign"] = {
 											["type"] = "min",
 										},
-										["fontSize"] = 24,
+										["fontSize"] = 18,
 									},
 								},
 							},
@@ -1603,7 +1603,7 @@ dialog = {
 											["r"] = 0.9843137254902,
 										},
 										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
-										["fontSize"] = 24,
+										["fontSize"] = 18,
 										["lineHeight"] = 0,
 									},
 								},

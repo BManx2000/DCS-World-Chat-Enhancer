@@ -41,7 +41,7 @@ ON_HOME = -2
 ON_PREVIOUS = 11
 ON_EXIT = 12
 
-menuWidth = 560
+menuWidth = 415
 
 function eventCallback(ptr, event, ...)
 	local self = list[ptr]
@@ -81,7 +81,7 @@ function init(self, data, rootItem, parent)
 	local textSkin = Skin.staticSkin()
 	textSkin.skinData.params.textWrapping = true
 	textSkin.skinData.states.released[1].text.font = font
-	textSkin.skinData.states.released[1].text.fontSize = 24;
+	textSkin.skinData.states.released[1].text.fontSize = 18;
 	textSkin.skinData.states.released[1].text.color = Color.white()
 	textSkin.skinData.states.released[1].text.shadowColor = Color.black()
 	textSkin.skinData.states.released[1].text.shadowOffset = Size.new(1, 1)
@@ -97,7 +97,7 @@ function init(self, data, rootItem, parent)
 			local menuCaption = Static.new('CommandMenu.menuCaption')
 			menuCaption:setSkin(textSkin)
 			local menuCaptionSkin = menuCaption:getSkin()
-			menuCaptionSkin.skinData.states.released[1].text.fontSize = 30;
+			menuCaptionSkin.skinData.states.released[1].text.fontSize = 22;
 			menuCaptionSkin.skinData.states.released[1].text.color = Color.white()
 			menuCaptionSkin.skinData.states.released[1].text.shadowColor = Color.black()
 			menuCaptionSkin.skinData.states.released[1].text.shadowOffset = Size.new(1, 1)

@@ -201,7 +201,7 @@ local skin = {
 							["r"] = 0.85490196078431,
 						},
 						["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
-						["fontSize"] = 24,
+						["fontSize"] = 18,
 						["horzAlign"] = {
 							["offset"] = 2,
 							["type"] = "middle",
