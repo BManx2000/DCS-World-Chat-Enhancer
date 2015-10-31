@@ -56,7 +56,6 @@ local slotByUnitId = {}
 local hideTimerTime = nil
 local debounceTime = nil
 local chatPos = {} 
->>>>>>> master
 
 -------------------------------------------------------------------------------
 -- 
