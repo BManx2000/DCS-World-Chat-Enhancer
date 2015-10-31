@@ -587,6 +587,67 @@ dialog = {
 			},
 			["type"] = "Panel",
 		},
+		["btnMail"] = {
+			["children"] = {
+			},
+			["params"] = {
+				["bounds"] = {
+					[1] = {
+						["h"] = 110,
+						["w"] = 48,
+						["x"] = 12,
+						["y"] = 222,
+					},
+				},
+				["enabled"] = {
+					[1] = true,
+				},
+				["sound"] = {
+				},
+				["text"] = {
+					[1] = "",
+				},
+				["tooltip"] = {
+					[1] = "",
+				},
+				["visible"] = {
+					[1] = true,
+				},
+				["zindex"] = {
+					[1] = 0,
+				},
+			},
+			["skin"] = {
+				["params"] = {
+					["name"] = "buttonSkin_chat_mail_ikon",
+				},
+				["states"] = {
+					["pressed"] = {
+						[1] = {
+							["bkg"] = {
+								["center_bottom"] = "$nil$",
+								["center_center"] = "$nil$",
+								["center_top"] = "$nil$",
+								["file"] = "$nil$",
+								["insets"] = {
+									["bottom"] = "$nil$",
+									["left"] = "$nil$",
+									["right"] = "$nil$",
+									["top"] = "$nil$",
+								},
+								["left_bottom"] = "$nil$",
+								["left_center"] = "$nil$",
+								["left_top"] = "$nil$",
+								["right_bottom"] = "$nil$",
+								["right_center"] = "$nil$",
+								["right_top"] = "$nil$",
+							},
+						},
+					},
+				},
+			},
+			["type"] = "Button",
+		},
 		["pNoVisible"] = {
 			["children"] = {
 				["eBlueText"] = {
