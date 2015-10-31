@@ -53,7 +53,7 @@ dialog = {
 											["r"] = 0.96078431372549,
 										},
 										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
-										["fontSize"] = 24,
+										["fontSize"] = 18,
 										["lineHeight"] = 0,
 										["shadowColor"] = {
 											["a"] = 1,
@@ -130,7 +130,7 @@ dialog = {
 											["r"] = 0.96078431372549,
 										},
 										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
-										["fontSize"] = 24,
+										["fontSize"] = 18,
 										["lineHeight"] = 0,
 										["shadowColor"] = {
 											["a"] = 1,
@@ -253,7 +253,7 @@ dialog = {
 											["r"] = 0.96078431372549,
 										},
 										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
-										["fontSize"] = 24,
+										["fontSize"] = 18,
 										["lineHeight"] = 0,
 									},
 								},
@@ -320,7 +320,7 @@ dialog = {
 											["r"] = 0.96078431372549,
 										},
 										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
-										["fontSize"] = 24,
+										["fontSize"] = 18,
 										["lineHeight"] = 0,
 									},
 								},
@@ -425,7 +425,7 @@ dialog = {
 							},
 							["text"] = {
 								["font"] = "DejaVuLGCSansMono.ttf",
-								["fontSize"] = 24,
+								["fontSize"] = 18,
 								["lineHeight"] = 0,
 							},
 						},
@@ -534,7 +534,7 @@ dialog = {
 									["r"] = 0.90588235294118,
 								},
 								["font"] = "DejaVuLGCSansMono.ttf",
-								["fontSize"] = 24,
+								["fontSize"] = 18,
 								["lineHeight"] = 0,
 								["shadowColor"] = {
 									["a"] = 1,
@@ -591,7 +591,7 @@ dialog = {
 						[1] = {
 							["text"] = {
 								["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
-								["fontSize"] = 24,
+								["fontSize"] = 18,
 								["lineHeight"] = 0,
 							},
 						},
