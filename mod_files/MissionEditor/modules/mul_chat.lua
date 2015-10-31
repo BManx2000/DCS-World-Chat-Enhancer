@@ -98,7 +98,7 @@ base.print("----function createChat------")
     
     testStatic = Static.new()
     testStatic:setSkin(pNoVisible.sYellowText:getSkin())
-    testStatic:setBounds(0,0,widthChat,40)
+    testStatic:setBounds(0,0,widthChat,27)
     
     eMx,eMy,eMw = eMessage:getBounds()
 
@@ -205,9 +205,9 @@ function chatJustClosed()
 end
     
 function resize(w, h)
-    window:setBounds(0, h/2-400, 720, 910)
+    window:setBounds(0, h/2-267, 480, 607)
     
-    box:setBounds(0, 55, 720, 800)
+    box:setBounds(0, 55, 480, 533)
 end
 
 --[[
@@ -262,13 +262,13 @@ function resizeEditMessage()
     pBtn:setBounds(x,eMy+newH+20,w,h)
     
     local x,y,w,h = box:getBounds()
-    box:setBounds(x,y,w,eMy+newH+634)
+    box:setBounds(x,y,w,eMy+newH+423)
     
     local x,y,w,h = pDown:getBounds()
     pDown:setBounds(x,y,w,eMy+newH+117)
     
     local x,y,w,h = window:getBounds()
-    window:setBounds(x,y,w,eMy+newH+744)
+    window:setBounds(x,y,w,eMy+newH+496)
 end
 
 function onChange_eMessage(self)
@@ -435,7 +435,7 @@ function setMode(a_mode)
         window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:removeHotKeyCallback('Tab', onTab)
         window:setHasCursor(true)
-        window:setBounds(0, h/2-400, 72, 110)
+        window:setBounds(0, h/2-267, 48, 73)
     end
     
     if modeCur == "read" then
@@ -451,7 +451,7 @@ function setMode(a_mode)
         window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:removeHotKeyCallback('Tab', onTab)
         window:setHasCursor(false)
-        window:setBounds(0, h/2-400, 720, 910)
+        window:setBounds(0, h/2-267, 480, 607)
     end
     
     if modeCur == "write" then
@@ -467,7 +467,7 @@ function setMode(a_mode)
         window:addHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:addHotKeyCallback('Tab', onTab)
         window:setHasCursor(true)
-        window:setBounds(0, h/2-400, 720, 910)
+        window:setBounds(0, h/2-267, 480, 607)
     end    
     updateListM()
 end
