@@ -1,0 +1,1766 @@
+dialog = {
+	["children"] = {
+		["Box"] = {
+			["children"] = {
+				["pDown"] = {
+					["children"] = {
+						["eMessage"] = {
+							["children"] = {
+							},
+							["params"] = {
+								["acceptDecimalPoint"] = {
+									[1] = false,
+								},
+								["bounds"] = {
+									[1] = {
+										["h"] = 18,
+										["w"] = 281,
+										["x"] = 14,
+										["y"] = 43,
+									},
+								},
+								["enabled"] = {
+									[1] = true,
+								},
+								["multiline"] = {
+									[1] = true,
+								},
+								["numeric"] = {
+									[1] = false,
+								},
+								["password"] = {
+									[1] = false,
+								},
+								["readOnly"] = {
+									[1] = false,
+								},
+								["text"] = {
+									[1] = "",
+								},
+								["textWrapping"] = {
+									[1] = true,
+								},
+								["tooltip"] = {
+									[1] = "",
+								},
+								["visible"] = {
+									[1] = true,
+								},
+								["zindex"] = {
+									[1] = 0,
+								},
+							},
+							["skin"] = {
+								["params"] = {
+									["horzScrollBarHeight"] = 0,
+									["name"] = "editBoxSkin",
+									["vertScrollBarWidth"] = 0,
+								},
+								["skins"] = {
+									["horzScrollBar"] = {
+										["skinData"] = {
+											["params"] = {
+												["maxSize"] = {
+													["vert"] = 0,
+												},
+												["minSize"] = {
+													["vert"] = 0,
+												},
+											},
+										},
+									},
+								},
+								["states"] = {
+									["released"] = {
+										[1] = {
+											["bkg"] = {
+												["center_bottom"] = {
+													["b"] = 0.25490196078431,
+													["g"] = 0.72549019607843,
+													["r"] = 0.9843137254902,
+												},
+												["center_center"] = "$nil$",
+												["center_top"] = "$nil$",
+												["file"] = "$nil$",
+												["insets"] = {
+													["left"] = "$nil$",
+													["right"] = "$nil$",
+													["top"] = "$nil$",
+												},
+												["left_bottom"] = {
+													["b"] = 0.25490196078431,
+													["g"] = 0.72549019607843,
+													["r"] = 0.9843137254902,
+												},
+												["left_center"] = "$nil$",
+												["left_top"] = "$nil$",
+												["right_bottom"] = {
+													["b"] = 0.25490196078431,
+													["g"] = 0.72549019607843,
+													["r"] = 0.9843137254902,
+												},
+												["right_center"] = "$nil$",
+												["right_top"] = "$nil$",
+											},
+											["text"] = {
+												["color"] = {
+													["b"] = 0.85098039215686,
+													["g"] = 0.85098039215686,
+													["r"] = 0.85098039215686,
+												},
+											},
+										},
+									},
+								},
+							},
+							["type"] = "EditBox",
+						},
+						["pBtn"] = {
+							["children"] = {
+								["sAll"] = {
+									["children"] = {
+									},
+									["params"] = {
+										["bounds"] = {
+											[1] = {
+												["h"] = 18,
+												["w"] = 100,
+												["x"] = 180,
+												["y"] = 6,
+											},
+										},
+										["enabled"] = {
+											[1] = true,
+										},
+										["text"] = {
+											[1] = "$ALL",
+										},
+										["tooltip"] = {
+											[1] = "",
+										},
+										["visible"] = {
+											[1] = true,
+										},
+										["zindex"] = {
+											[1] = 0,
+										},
+									},
+									["skin"] = {
+										["params"] = {
+											["name"] = "staticSkin",
+										},
+										["states"] = {
+											["released"] = {
+												[1] = {
+													["text"] = {
+														["color"] = {
+															["b"] = 0.90980392156863,
+															["g"] = 0.90980392156863,
+															["r"] = 0.90980392156863,
+														},
+														["font"] = "DejaVuLGCSansCondensed.ttf",
+														["fontSize"] = 10,
+														["lineHeight"] = 0,
+													},
+												},
+											},
+										},
+									},
+									["type"] = "Static",
+								},
+								["sAllies"] = {
+									["children"] = {
+									},
+									["params"] = {
+										["bounds"] = {
+											[1] = {
+												["h"] = 20,
+												["w"] = 68,
+												["x"] = 19,
+												["y"] = 6,
+											},
+										},
+										["enabled"] = {
+											[1] = true,
+										},
+										["text"] = {
+											[1] = "$ALLIES",
+										},
+										["tooltip"] = {
+											[1] = "",
+										},
+										["visible"] = {
+											[1] = true,
+										},
+										["zindex"] = {
+											[1] = 0,
+										},
+									},
+									["skin"] = {
+										["params"] = {
+											["name"] = "staticSkin",
+										},
+										["states"] = {
+											["released"] = {
+												[1] = {
+													["text"] = {
+														["color"] = {
+															["b"] = 0.90980392156863,
+															["g"] = 0.90980392156863,
+															["r"] = 0.90980392156863,
+														},
+														["font"] = "DejaVuLGCSansCondensed.ttf",
+														["fontSize"] = 10,
+														["horzAlign"] = {
+															["type"] = "max",
+														},
+														["lineHeight"] = 0,
+													},
+												},
+											},
+										},
+									},
+									["type"] = "Static",
+								},
+								["tbAll"] = {
+									["children"] = {
+									},
+									["params"] = {
+										["bounds"] = {
+											[1] = {
+												["h"] = 12,
+												["w"] = 36,
+												["x"] = 115,
+												["y"] = 5,
+											},
+										},
+										["enabled"] = {
+											[1] = true,
+										},
+										["sound"] = {
+										},
+										["state"] = {
+											[1] = false,
+										},
+										["text"] = {
+											[1] = "",
+										},
+										["tooltip"] = {
+											[1] = "",
+										},
+										["visible"] = {
+											[1] = true,
+										},
+										["zindex"] = {
+											[1] = 0,
+										},
+									},
+									["skin"] = {
+										["params"] = {
+											["name"] = "toggleButtonSkin_chat_on_off",
+										},
+										["states"] = {
+											["hover"] = {
+												[1] = {
+													["bkg"] = {
+														["file"] = "dxgui\\skins\\skinme\\images\\buttons\\chat\\_chat_enter_text_off.png",
+														["insets"] = {
+															["bottom"] = 1,
+															["left"] = 1,
+															["right"] = 1,
+															["top"] = 1,
+														},
+													},
+												},
+												[2] = {
+													["bkg"] = {
+														["file"] = "dxgui\\skins\\skinme\\images\\buttons\\chat\\_chat_enter_text_on.png",
+														["insets"] = {
+															["bottom"] = 1,
+															["left"] = 1,
+															["right"] = 1,
+															["top"] = 1,
+														},
+													},
+												},
+											},
+											["pressed"] = {
+												[1] = {
+													["bkg"] = {
+														["file"] = "dxgui\\skins\\skinme\\images\\buttons\\chat\\_chat_enter_text_off.png",
+														["insets"] = {
+															["bottom"] = 1,
+															["left"] = 1,
+															["right"] = 1,
+															["top"] = 1,
+														},
+													},
+												},
+												[2] = {
+													["bkg"] = {
+														["center_center"] = {
+															["b"] = 1,
+															["g"] = 1,
+															["r"] = 1,
+														},
+														["file"] = "dxgui\\skins\\skinme\\images\\buttons\\chat\\_chat_enter_text_on.png",
+														["insets"] = {
+															["bottom"] = 1,
+															["left"] = 1,
+															["right"] = 1,
+															["top"] = 1,
+														},
+													},
+												},
+											},
+											["released"] = {
+												[1] = {
+													["bkg"] = {
+														["center_center"] = {
+															["b"] = 1,
+															["g"] = 1,
+															["r"] = 1,
+														},
+														["file"] = "dxgui\\skins\\skinme\\images\\buttons\\chat\\_chat_enter_text_off.png",
+													},
+												},
+												[2] = {
+													["bkg"] = {
+														["file"] = "dxgui\\skins\\skinme\\images\\buttons\\chat\\_chat_enter_text_on.png",
+													},
+												},
+											},
+										},
+									},
+									["type"] = "ToggleButton",
+								},
+							},
+							["params"] = {
+								["bounds"] = {
+									[1] = {
+										["h"] = 34,
+										["w"] = 291,
+										["x"] = 21,
+										["y"] = 80,
+									},
+								},
+								["enabled"] = {
+									[1] = true,
+								},
+								["layout"] = {
+									[1] = {
+									},
+								},
+								["text"] = {
+									[1] = "panel0",
+								},
+								["tooltip"] = {
+									[1] = "",
+								},
+								["visible"] = {
+									[1] = true,
+								},
+								["zindex"] = {
+									[1] = 0,
+								},
+							},
+							["skin"] = {
+								["params"] = {
+									["name"] = "panelSkin",
+								},
+							},
+							["type"] = "Panel",
+						},
+						["sMsg"] = {
+							["children"] = {
+							},
+							["params"] = {
+								["bounds"] = {
+									[1] = {
+										["h"] = 20,
+										["w"] = 61,
+										["x"] = 13,
+										["y"] = 6,
+									},
+								},
+								["enabled"] = {
+									[1] = true,
+								},
+								["text"] = {
+									[1] = "$MESSAGE",
+								},
+								["tooltip"] = {
+									[1] = "",
+								},
+								["visible"] = {
+									[1] = true,
+								},
+								["zindex"] = {
+									[1] = 0,
+								},
+							},
+							["skin"] = {
+								["params"] = {
+									["name"] = "staticSkin",
+								},
+								["states"] = {
+									["released"] = {
+										[1] = {
+											["text"] = {
+												["color"] = {
+													["b"] = 1,
+													["g"] = 1,
+													["r"] = 1,
+												},
+												["font"] = "DejaVuLGCSansCondensed.ttf",
+												["lineHeight"] = 0,
+											},
+										},
+									},
+								},
+							},
+							["type"] = "Static",
+						},
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 149,
+								["w"] = 339,
+								["x"] = 9,
+								["y"] = 267,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["layout"] = {
+							[1] = {
+							},
+						},
+						["text"] = {
+							[1] = "panel0",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "panelSkin",
+						},
+					},
+					["type"] = "Panel",
+				},
+				["pMsg"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 209,
+								["w"] = 316,
+								["x"] = 17,
+								["y"] = 39,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["layout"] = {
+							[1] = {
+							},
+						},
+						["text"] = {
+							[1] = "panel0",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "panelSkin",
+						},
+					},
+					["type"] = "Panel",
+				},
+				["vsScroll"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 274,
+								["w"] = 16,
+								["x"] = 344,
+								["y"] = 10,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["pageStep"] = {
+							[1] = 10,
+						},
+						["range"] = {
+							[1] = {
+								["max"] = 100,
+								["min"] = 0,
+							},
+						},
+						["step"] = {
+							[1] = 1,
+						},
+						["text"] = {
+							[1] = "vertScrollBar0",
+						},
+						["thumbValue"] = {
+							[1] = 30,
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["value"] = {
+							[1] = 0,
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 2,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "vertScrollBarSkin_by_chat",
+						},
+					},
+					["type"] = "VertScrollBar",
+				},
+			},
+			["params"] = {
+				["bounds"] = {
+					[1] = {
+						["h"] = 450,
+						["w"] = 360,
+						["x"] = 0,
+						["y"] = 55,
+					},
+				},
+				["enabled"] = {
+					[1] = true,
+				},
+				["layout"] = {
+					[1] = {
+					},
+				},
+				["text"] = {
+					[1] = "panel0",
+				},
+				["tooltip"] = {
+					[1] = "",
+				},
+				["visible"] = {
+					[1] = true,
+				},
+				["zindex"] = {
+					[1] = 0,
+				},
+			},
+			["skin"] = {
+				["params"] = {
+					["name"] = "panelSkin",
+				},
+			},
+			["type"] = "Panel",
+		},
+		["btnMail"] = {
+			["children"] = {
+			},
+			["params"] = {
+				["bounds"] = {
+					[1] = {
+						["h"] = 55,
+						["w"] = 24,
+						["x"] = 12,
+						["y"] = 222,
+					},
+				},
+				["enabled"] = {
+					[1] = true,
+				},
+				["sound"] = {
+				},
+				["text"] = {
+					[1] = "",
+				},
+				["tooltip"] = {
+					[1] = "",
+				},
+				["visible"] = {
+					[1] = true,
+				},
+				["zindex"] = {
+					[1] = 0,
+				},
+			},
+			["skin"] = {
+				["params"] = {
+					["name"] = "buttonSkin_chat_mail_ikon",
+				},
+				["states"] = {
+					["pressed"] = {
+						[1] = {
+							["bkg"] = {
+								["center_bottom"] = "$nil$",
+								["center_center"] = "$nil$",
+								["center_top"] = "$nil$",
+								["file"] = "$nil$",
+								["insets"] = {
+									["bottom"] = "$nil$",
+									["left"] = "$nil$",
+									["right"] = "$nil$",
+									["top"] = "$nil$",
+								},
+								["left_bottom"] = "$nil$",
+								["left_center"] = "$nil$",
+								["left_top"] = "$nil$",
+								["right_bottom"] = "$nil$",
+								["right_center"] = "$nil$",
+								["right_top"] = "$nil$",
+							},
+						},
+					},
+				},
+			},
+			["type"] = "Button",
+		},
+		["pNoVisible"] = {
+			["children"] = {
+				["eBlueText"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["acceptDecimalPoint"] = {
+							[1] = false,
+						},
+						["bounds"] = {
+							[1] = {
+								["h"] = 20,
+								["w"] = 100,
+								["x"] = 7,
+								["y"] = 348,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["multiline"] = {
+							[1] = true,
+						},
+						["numeric"] = {
+							[1] = false,
+						},
+						["password"] = {
+							[1] = false,
+						},
+						["readOnly"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "eBlueText",
+						},
+						["textWrapping"] = {
+							[1] = true,
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["horzScrollBarHeight"] = 0,
+							["linesPerWheelClick"] = 0,
+							["name"] = "editBox_row_chat",
+							["textOffset"] = {
+								["horz"] = 0,
+								["vert"] = 0,
+							},
+							["vertScrollBarWidth"] = 0,
+						},
+						["skins"] = {
+							["horzScrollBar"] = {
+								["skinData"] = {
+									["params"] = {
+										["maxSize"] = {
+											["vert"] = 0,
+										},
+										["minSize"] = {
+											["vert"] = 0,
+										},
+									},
+								},
+							},
+							["vertScrollBar"] = {
+								["skinData"] = {
+									["params"] = {
+										["maxSize"] = {
+											["horz"] = 0,
+										},
+										["minSize"] = {
+											["horz"] = 0,
+										},
+									},
+								},
+							},
+						},
+						["states"] = {
+							["released"] = {
+								[2] = {
+									["text"] = {
+										["color"] = {
+											["b"] = 0.94901960784314,
+											["g"] = 0.36078431372549,
+											["r"] = 0,
+										},
+										["horzAlign"] = {
+											["type"] = "min",
+										},
+										["vertAlign"] = {
+											["type"] = "min",
+										},
+									},
+								},
+							},
+						},
+					},
+					["type"] = "EditBox",
+				},
+				["eRedText"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["acceptDecimalPoint"] = {
+							[1] = false,
+						},
+						["bounds"] = {
+							[1] = {
+								["h"] = 20,
+								["w"] = 100,
+								["x"] = 8,
+								["y"] = 311,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["multiline"] = {
+							[1] = true,
+						},
+						["numeric"] = {
+							[1] = false,
+						},
+						["password"] = {
+							[1] = false,
+						},
+						["readOnly"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "eRedText",
+						},
+						["textWrapping"] = {
+							[1] = true,
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["horzScrollBarHeight"] = 0,
+							["insets"] = {
+								["bottom"] = 0,
+								["left"] = 0,
+								["right"] = 0,
+								["top"] = 0,
+							},
+							["linesPerWheelClick"] = 0,
+							["name"] = "editBox_row_chat",
+							["textOffset"] = {
+								["horz"] = 0,
+								["vert"] = 0,
+							},
+							["vertScrollBarWidth"] = 0,
+						},
+						["skins"] = {
+							["horzScrollBar"] = {
+								["skinData"] = {
+									["params"] = {
+										["maxSize"] = {
+											["vert"] = 0,
+										},
+										["minSize"] = {
+											["vert"] = 0,
+										},
+									},
+								},
+							},
+							["vertScrollBar"] = {
+								["skinData"] = {
+									["params"] = {
+										["maxSize"] = {
+											["horz"] = 0,
+										},
+									},
+								},
+							},
+						},
+						["states"] = {
+							["released"] = {
+								[2] = {
+									["text"] = {
+										["color"] = {
+											["b"] = 0.082352941176471,
+											["g"] = 0.14117647058824,
+											["r"] = 0.72549019607843,
+										},
+										["horzAlign"] = {
+											["type"] = "min",
+										},
+										["vertAlign"] = {
+											["type"] = "min",
+										},
+									},
+								},
+							},
+						},
+					},
+					["type"] = "EditBox",
+				},
+				["eWhiteText"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["acceptDecimalPoint"] = {
+							[1] = false,
+						},
+						["bounds"] = {
+							[1] = {
+								["h"] = 20,
+								["w"] = 100,
+								["x"] = 6,
+								["y"] = 389,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["multiline"] = {
+							[1] = true,
+						},
+						["numeric"] = {
+							[1] = false,
+						},
+						["password"] = {
+							[1] = false,
+						},
+						["readOnly"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "eWhiteText",
+						},
+						["textWrapping"] = {
+							[1] = true,
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["horzScrollBarHeight"] = 0,
+							["insets"] = {
+								["bottom"] = "$nil$",
+								["left"] = "$nil$",
+								["right"] = "$nil$",
+								["top"] = "$nil$",
+							},
+							["linesPerWheelClick"] = 0,
+							["name"] = "editBox_row_chat",
+							["textOffset"] = {
+								["horz"] = 0,
+								["vert"] = 0,
+							},
+							["vertScrollBarWidth"] = 0,
+						},
+						["skins"] = {
+							["horzScrollBar"] = {
+								["skinData"] = {
+									["params"] = {
+										["maxSize"] = {
+											["vert"] = 0,
+										},
+										["minSize"] = {
+											["vert"] = 0,
+										},
+									},
+								},
+							},
+							["vertScrollBar"] = {
+								["skinData"] = {
+									["params"] = {
+										["maxSize"] = {
+											["horz"] = 0,
+										},
+										["minSize"] = {
+											["horz"] = 0,
+										},
+									},
+								},
+							},
+						},
+						["states"] = {
+							["released"] = {
+								[2] = {
+									["text"] = {
+										["color"] = {
+											["b"] = 1,
+											["g"] = 1,
+											["r"] = 1,
+										},
+										["horzAlign"] = {
+											["type"] = "min",
+										},
+										["shadowColor"] = {
+											["a"] = 1,
+											["b"] = 0,
+											["g"] = 0,
+											["r"] = 0,
+										},
+										["shadowOffset"] = {
+											["horz"] = "$nil$",
+											["vert"] = "$nil$",
+										},
+										["vertAlign"] = {
+											["type"] = "min",
+										},
+									},
+								},
+							},
+						},
+					},
+					["type"] = "EditBox",
+				},
+				["eYellowText"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["acceptDecimalPoint"] = {
+							[1] = false,
+						},
+						["bounds"] = {
+							[1] = {
+								["h"] = 20,
+								["w"] = 100,
+								["x"] = 8,
+								["y"] = 269,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["multiline"] = {
+							[1] = true,
+						},
+						["numeric"] = {
+							[1] = false,
+						},
+						["password"] = {
+							[1] = false,
+						},
+						["readOnly"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "eYellowText",
+						},
+						["textWrapping"] = {
+							[1] = true,
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["horzScrollBarHeight"] = 0,
+							["insets"] = {
+								["bottom"] = "$nil$",
+								["left"] = "$nil$",
+								["right"] = "$nil$",
+								["top"] = "$nil$",
+							},
+							["linesPerWheelClick"] = 0,
+							["name"] = "editBoxSkin",
+							["textOffset"] = {
+								["horz"] = 0,
+								["vert"] = 0,
+							},
+							["vertScrollBarWidth"] = 0,
+						},
+						["skins"] = {
+							["horzScrollBar"] = {
+								["skinData"] = {
+									["params"] = {
+										["maxSize"] = {
+											["vert"] = 0,
+										},
+										["minSize"] = {
+											["vert"] = 0,
+										},
+									},
+								},
+							},
+							["vertScrollBar"] = {
+								["skinData"] = {
+									["params"] = {
+										["maxSize"] = {
+											["horz"] = 0,
+										},
+										["minSize"] = {
+											["horz"] = 0,
+										},
+									},
+								},
+							},
+						},
+						["states"] = {
+							["released"] = {
+								[2] = {
+									["bkg"] = {
+										["center_bottom"] = "$nil$",
+										["center_center"] = "$nil$",
+										["center_top"] = "$nil$",
+										["file"] = "$nil$",
+										["insets"] = {
+											["bottom"] = "$nil$",
+											["left"] = "$nil$",
+											["right"] = "$nil$",
+											["top"] = "$nil$",
+										},
+										["left_bottom"] = "$nil$",
+										["left_center"] = "$nil$",
+										["left_top"] = "$nil$",
+										["right_bottom"] = "$nil$",
+										["right_center"] = "$nil$",
+										["right_top"] = "$nil$",
+									},
+									["text"] = {
+										["color"] = {
+											["b"] = 0.25490196078431,
+											["g"] = 0.72549019607843,
+											["r"] = 0.9843137254902,
+										},
+										["horzAlign"] = {
+											["type"] = "min",
+										},
+										["lineHeight"] = 0,
+										["shadowOffset"] = {
+											["horz"] = 1,
+											["vert"] = 1,
+										},
+										["vertAlign"] = {
+											["type"] = "min",
+										},
+									},
+								},
+							},
+						},
+					},
+					["type"] = "EditBox",
+				},
+				["pModeRead"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 30,
+								["w"] = 32,
+								["x"] = 91,
+								["y"] = 204,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["layout"] = {
+							[1] = {
+							},
+						},
+						["text"] = {
+							[1] = "Panel1",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "panelSkin",
+						},
+					},
+					["type"] = "Panel",
+				},
+				["pModeWrite"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 36,
+								["w"] = 40,
+								["x"] = 13,
+								["y"] = 203,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["layout"] = {
+							[1] = {
+							},
+						},
+						["text"] = {
+							[1] = "panel0",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "panelSkin",
+						},
+						["states"] = {
+							["released"] = {
+								[1] = {
+									["bkg"] = {
+										["center_center"] = {
+											["a"] = 0.3921568627451,
+											["b"] = 0,
+											["g"] = 0,
+											["r"] = 0,
+										},
+									},
+								},
+							},
+						},
+					},
+					["type"] = "Panel",
+				},
+				["sBlueText"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 20,
+								["w"] = 100,
+								["x"] = 22,
+								["y"] = 112,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "Static2",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "staticSkin",
+							["textWrapping"] = true,
+						},
+						["states"] = {
+							["released"] = {
+								[1] = {
+									["text"] = {
+										["color"] = {
+											["b"] = 0.94901960784314,
+											["g"] = 0.36078431372549,
+											["r"] = 0,
+										},
+										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
+										["lineHeight"] = 0,
+									},
+								},
+							},
+						},
+					},
+					["type"] = "Static",
+				},
+				["sNoSelAll"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 18,
+								["w"] = 86,
+								["x"] = 126,
+								["y"] = 270,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "$ALL",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "staticSkin",
+						},
+						["states"] = {
+							["released"] = {
+								[1] = {
+									["text"] = {
+										["color"] = {
+											["b"] = 0.25490196078431,
+											["g"] = 0.72549019607843,
+											["r"] = 0.9843137254902,
+										},
+										["font"] = "DejaVuLGCSansCondensed.ttf",
+										["fontSize"] = 10,
+										["lineHeight"] = 0,
+									},
+								},
+							},
+						},
+					},
+					["type"] = "Static",
+				},
+				["sNoSelAllies"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 20,
+								["w"] = 68,
+								["x"] = 143,
+								["y"] = 355,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "$ALLIES",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "staticSkin",
+						},
+						["states"] = {
+							["released"] = {
+								[1] = {
+									["text"] = {
+										["color"] = {
+											["b"] = 0.90980392156863,
+											["g"] = 0.90980392156863,
+											["r"] = 0.90980392156863,
+										},
+										["font"] = "DejaVuLGCSansCondensed.ttf",
+										["fontSize"] = 10,
+										["horzAlign"] = {
+											["type"] = "max",
+										},
+										["lineHeight"] = 0,
+									},
+								},
+							},
+						},
+					},
+					["type"] = "Static",
+				},
+				["sOptValue"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 17,
+								["w"] = 81,
+								["x"] = 435,
+								["y"] = 169,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "sOptValue",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "staticSkin2_scrollPane_text",
+						},
+						["states"] = {
+							["released"] = {
+								[1] = {
+									["text"] = {
+										["fontSize"] = 13,
+									},
+								},
+							},
+						},
+					},
+					["type"] = "Static",
+				},
+				["sRedText"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 20,
+								["w"] = 100,
+								["x"] = 24,
+								["y"] = 66,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "Static1",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "staticSkin",
+							["textWrapping"] = true,
+						},
+						["states"] = {
+							["released"] = {
+								[1] = {
+									["text"] = {
+										["color"] = {
+											["b"] = 0.082352941176471,
+											["g"] = 0.14117647058824,
+											["r"] = 0.72549019607843,
+										},
+										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
+										["lineHeight"] = 0,
+									},
+								},
+							},
+						},
+					},
+					["type"] = "Static",
+				},
+				["sSelAll"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 18,
+								["w"] = 100,
+								["x"] = 125,
+								["y"] = 303,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "sSelAll",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "staticSkin",
+						},
+						["states"] = {
+							["released"] = {
+								[1] = {
+									["text"] = {
+										["color"] = {
+											["b"] = 0.90980392156863,
+											["g"] = 0.90980392156863,
+											["r"] = 0.90980392156863,
+										},
+										["font"] = "DejaVuLGCSansCondensed.ttf",
+										["fontSize"] = 10,
+										["lineHeight"] = 0,
+									},
+								},
+							},
+						},
+					},
+					["type"] = "Static",
+				},
+				["sSelAllies"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 20,
+								["w"] = 68,
+								["x"] = 142,
+								["y"] = 397,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "$ALLIES",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "staticSkin",
+						},
+						["states"] = {
+							["released"] = {
+								[1] = {
+									["text"] = {
+										["color"] = {
+											["b"] = 0.25490196078431,
+											["g"] = 0.72549019607843,
+											["r"] = 0.9843137254902,
+										},
+										["font"] = "DejaVuLGCSansCondensed.ttf",
+										["fontSize"] = 10,
+										["horzAlign"] = {
+											["type"] = "max",
+										},
+										["lineHeight"] = 0,
+									},
+								},
+							},
+						},
+					},
+					["type"] = "Static",
+				},
+				["sWhiteText"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 20,
+								["w"] = 100,
+								["x"] = 26,
+								["y"] = 157,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "Static3",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "staticSkin",
+							["textWrapping"] = true,
+						},
+						["states"] = {
+							["released"] = {
+								[1] = {
+									["text"] = {
+										["color"] = {
+											["b"] = 1,
+											["g"] = 1,
+											["r"] = 1,
+										},
+										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
+										["lineHeight"] = 0,
+									},
+								},
+							},
+						},
+					},
+					["type"] = "Static",
+				},
+				["sYellowText"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 20,
+								["w"] = 100,
+								["x"] = 24,
+								["y"] = 20,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "static0",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = true,
+						},
+						["zindex"] = {
+							[1] = 0,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "staticSkin",
+							["textWrapping"] = true,
+						},
+						["states"] = {
+							["released"] = {
+								[1] = {
+									["text"] = {
+										["color"] = {
+											["b"] = 0.25490196078431,
+											["g"] = 0.72549019607843,
+											["r"] = 0.9843137254902,
+										},
+										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
+										["fontSize"] = 14,
+										["lineHeight"] = 0,
+									},
+								},
+							},
+						},
+					},
+					["type"] = "Static",
+				},
+			},
+			["params"] = {
+				["bounds"] = {
+					[1] = {
+						["h"] = 435,
+						["w"] = 228,
+						["x"] = 390,
+						["y"] = 26,
+					},
+				},
+				["enabled"] = {
+					[1] = true,
+				},
+				["layout"] = {
+					[1] = {
+					},
+				},
+				["text"] = {
+					[1] = "panel0",
+				},
+				["tooltip"] = {
+					[1] = "",
+				},
+				["visible"] = {
+					[1] = false,
+				},
+				["zindex"] = {
+					[1] = 0,
+				},
+			},
+			["skin"] = {
+				["params"] = {
+					["name"] = "panelSkin",
+				},
+			},
+			["type"] = "Panel",
+		},
+	},
+	["params"] = {
+		["bounds"] = {
+			[1] = {
+				["h"] = 516,
+				["w"] = 693,
+				["x"] = 0,
+				["y"] = 0,
+			},
+		},
+		["draggable"] = {
+			[1] = true,
+		},
+		["enabled"] = {
+			[1] = true,
+		},
+		["hasCursor"] = {
+			[1] = true,
+		},
+		["layout"] = {
+			[1] = {
+			},
+		},
+		["lockFlow"] = {
+			[1] = false,
+		},
+		["modal"] = {
+			[1] = false,
+		},
+		["text"] = {
+			[1] = "New dialog",
+		},
+		["zOrder"] = {
+			[1] = 1,
+		},
+	},
+	["skin"] = {
+		["params"] = {
+			["headerHeight"] = 0,
+			["name"] = "windowSkin",
+		},
+		["states"] = {
+			["released"] = {
+				[1] = {
+					["bkg"] = {
+						["center_center"] = {
+							["a"] = 0,
+							["b"] = 0,
+							["g"] = 0,
+							["r"] = 0,
+						},
+					},
+				},
+			},
+		},
+	},
+	["type"] = "Window",
+}

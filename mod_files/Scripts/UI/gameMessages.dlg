@@ -1,0 +1,677 @@
+dialog = {
+	["children"] = {
+		["pLentaRadio"] = {
+			["children"] = {
+				["staticTmp"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 40,
+								["w"] = 140,
+								["x"] = 23,
+								["y"] = 27,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "static0",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = false,
+						},
+						["zindex"] = {
+							[1] = 2,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "staticSkin",
+							["textWrapping"] = true,
+						},
+						["states"] = {
+							["released"] = {
+								[1] = {
+									["picture"] = {
+										["horzAlign"] = {
+											["type"] = "stretch",
+										},
+										["vertAlign"] = {
+											["type"] = "max",
+										},
+									},
+									["text"] = {
+										["color"] = {
+											["b"] = 0.95686274509804,
+											["g"] = 0.96078431372549,
+											["r"] = 0.96078431372549,
+										},
+										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
+										["lineHeight"] = 0,
+										["shadowColor"] = {
+											["a"] = 1,
+											["b"] = 0,
+											["g"] = 0,
+											["r"] = 0,
+										},
+										["shadowOffset"] = {
+											["horz"] = 1,
+											["vert"] = 1,
+										},
+									},
+								},
+							},
+						},
+					},
+					["type"] = "Static",
+				},
+				["staticTmpSep"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 39,
+								["w"] = 171,
+								["x"] = 24,
+								["y"] = 97,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "static0",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = false,
+						},
+						["zindex"] = {
+							[1] = 2,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "staticSkin",
+							["textWrapping"] = true,
+						},
+						["states"] = {
+							["released"] = {
+								[1] = {
+									["picture"] = {
+										["color"] = {
+											["a"] = 1,
+											["b"] = 1,
+											["g"] = 1,
+											["r"] = 1,
+										},
+										["file"] = ".\\dxgui\\skins\\common\\images\\separator_messages.png",
+										["horzAlign"] = {
+											["type"] = "stretch",
+										},
+										["vertAlign"] = {
+											["type"] = "max",
+										},
+									},
+									["text"] = {
+										["color"] = {
+											["b"] = 0.95686274509804,
+											["g"] = 0.96078431372549,
+											["r"] = 0.96078431372549,
+										},
+										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
+										["lineHeight"] = 0,
+										["shadowColor"] = {
+											["a"] = 1,
+											["b"] = 0,
+											["g"] = 0,
+											["r"] = 0,
+										},
+										["shadowOffset"] = {
+											["horz"] = 1,
+											["vert"] = 1,
+										},
+									},
+								},
+							},
+						},
+					},
+					["type"] = "Static",
+				},
+			},
+			["params"] = {
+				["bounds"] = {
+					[1] = {
+						["h"] = 342,
+						["w"] = 250,
+						["x"] = 25,
+						["y"] = 40,
+					},
+				},
+				["enabled"] = {
+					[1] = true,
+				},
+				["layout"] = {
+					[1] = {
+					},
+				},
+				["text"] = {
+					[1] = "panel0",
+				},
+				["tooltip"] = {
+					[1] = "",
+				},
+				["visible"] = {
+					[1] = true,
+				},
+				["zindex"] = {
+					[1] = 1,
+				},
+			},
+			["skin"] = {
+				["params"] = {
+					["name"] = "panelSkin",
+				},
+				["states"] = {
+					["released"] = {
+						[1] = {
+							["bkg"] = {
+								["center_center"] = {
+									["a"] = 0,
+									["b"] = 0,
+									["g"] = 0,
+									["r"] = 0,
+								},
+							},
+						},
+					},
+				},
+			},
+			["type"] = "Panel",
+		},
+		["pLentaTrig"] = {
+			["children"] = {
+				["staticTmp"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 39,
+								["w"] = 171,
+								["x"] = 27,
+								["y"] = 32,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "static0",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = false,
+						},
+						["zindex"] = {
+							[1] = 2,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "staticSkin",
+							["textWrapping"] = true,
+						},
+						["states"] = {
+							["released"] = {
+								[1] = {
+									["picture"] = {
+										["horzAlign"] = {
+											["type"] = "stretch",
+										},
+										["vertAlign"] = {
+											["type"] = "max",
+										},
+									},
+									["text"] = {
+										["color"] = {
+											["b"] = 0.95686274509804,
+											["g"] = 0.96078431372549,
+											["r"] = 0.96078431372549,
+										},
+										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
+										["lineHeight"] = 0,
+									},
+								},
+							},
+						},
+					},
+					["type"] = "Static",
+				},
+				["staticTmpSep"] = {
+					["children"] = {
+					},
+					["params"] = {
+						["bounds"] = {
+							[1] = {
+								["h"] = 39,
+								["w"] = 171,
+								["x"] = 35,
+								["y"] = 106,
+							},
+						},
+						["enabled"] = {
+							[1] = true,
+						},
+						["text"] = {
+							[1] = "static0",
+						},
+						["tooltip"] = {
+							[1] = "",
+						},
+						["visible"] = {
+							[1] = false,
+						},
+						["zindex"] = {
+							[1] = 2,
+						},
+					},
+					["skin"] = {
+						["params"] = {
+							["name"] = "staticSkin",
+							["textWrapping"] = true,
+						},
+						["states"] = {
+							["released"] = {
+								[1] = {
+									["picture"] = {
+										["color"] = {
+											["a"] = 1,
+											["b"] = 1,
+											["g"] = 1,
+											["r"] = 1,
+										},
+										["file"] = ".\\dxgui\\skins\\common\\images\\separator_messages.png",
+										["horzAlign"] = {
+											["type"] = "stretch",
+										},
+										["vertAlign"] = {
+											["type"] = "max",
+										},
+									},
+									["text"] = {
+										["color"] = {
+											["b"] = 0.95686274509804,
+											["g"] = 0.96078431372549,
+											["r"] = 0.96078431372549,
+										},
+										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
+										["lineHeight"] = 0,
+									},
+								},
+							},
+						},
+					},
+					["type"] = "Static",
+				},
+			},
+			["params"] = {
+				["bounds"] = {
+					[1] = {
+						["h"] = 342,
+						["w"] = 250,
+						["x"] = 335,
+						["y"] = 42,
+					},
+				},
+				["enabled"] = {
+					[1] = true,
+				},
+				["layout"] = {
+					[1] = {
+					},
+				},
+				["text"] = {
+					[1] = "panel0",
+				},
+				["tooltip"] = {
+					[1] = "",
+				},
+				["visible"] = {
+					[1] = true,
+				},
+				["zindex"] = {
+					[1] = 1,
+				},
+			},
+			["skin"] = {
+				["params"] = {
+					["name"] = "panelSkin",
+				},
+				["states"] = {
+					["released"] = {
+						[1] = {
+							["bkg"] = {
+								["center_center"] = {
+									["a"] = 0.49019607843137,
+									["b"] = 0,
+									["g"] = 0,
+									["r"] = 0,
+								},
+							},
+						},
+					},
+				},
+			},
+			["type"] = "Panel",
+		},
+		["sMain"] = {
+			["children"] = {
+			},
+			["params"] = {
+				["bounds"] = {
+					[1] = {
+						["h"] = 13,
+						["w"] = 47,
+						["x"] = 25,
+						["y"] = 3,
+					},
+				},
+				["enabled"] = {
+					[1] = true,
+				},
+				["text"] = {
+					[1] = "main:",
+				},
+				["tooltip"] = {
+					[1] = "",
+				},
+				["visible"] = {
+					[1] = true,
+				},
+				["zindex"] = {
+					[1] = 0,
+				},
+			},
+			["skin"] = {
+				["params"] = {
+					["name"] = "staticSkin",
+				},
+				["states"] = {
+					["released"] = {
+						[1] = {
+							["bkg"] = {
+								["center_center"] = {
+									["a"] = 0.51764705882353,
+									["b"] = 0,
+									["g"] = 0,
+									["r"] = 0,
+								},
+							},
+							["text"] = {
+								["font"] = "DejaVuLGCSansMono.ttf",
+								["lineHeight"] = 0,
+							},
+						},
+					},
+				},
+			},
+			["type"] = "Static",
+		},
+		["sPause"] = {
+			["children"] = {
+			},
+			["params"] = {
+				["bounds"] = {
+					[1] = {
+						["h"] = 61,
+						["w"] = 65,
+						["x"] = 685,
+						["y"] = 9,
+					},
+				},
+				["enabled"] = {
+					[1] = true,
+				},
+				["text"] = {
+					[1] = "",
+				},
+				["tooltip"] = {
+					[1] = "",
+				},
+				["visible"] = {
+					[1] = true,
+				},
+				["zindex"] = {
+					[1] = 0,
+				},
+			},
+			["skin"] = {
+				["params"] = {
+					["name"] = "staticSkin",
+				},
+				["states"] = {
+					["released"] = {
+						[1] = {
+							["picture"] = {
+								["color"] = {
+									["a"] = 1,
+									["b"] = 1,
+									["g"] = 1,
+									["r"] = 1,
+								},
+								["file"] = ".\\dxgui\\skins\\skinME\\images\\pause-button.png",
+							},
+						},
+					},
+				},
+			},
+			["type"] = "Static",
+		},
+		["sRadioAuto"] = {
+			["children"] = {
+			},
+			["params"] = {
+				["bounds"] = {
+					[1] = {
+						["h"] = 15,
+						["w"] = 301,
+						["x"] = 78,
+						["y"] = 3,
+					},
+				},
+				["enabled"] = {
+					[1] = true,
+				},
+				["text"] = {
+					[1] = "Static1",
+				},
+				["tooltip"] = {
+					[1] = "",
+				},
+				["visible"] = {
+					[1] = true,
+				},
+				["zindex"] = {
+					[1] = 0,
+				},
+			},
+			["skin"] = {
+				["params"] = {
+					["name"] = "staticSkin",
+				},
+				["states"] = {
+					["released"] = {
+						[1] = {
+							["bkg"] = {
+								["center_center"] = {
+									["a"] = 0.52156862745098,
+									["b"] = 0,
+									["g"] = 0,
+									["r"] = 0,
+								},
+							},
+							["text"] = {
+								["color"] = {
+									["b"] = 0.89411764705882,
+									["g"] = 0.90588235294118,
+									["r"] = 0.90588235294118,
+								},
+								["font"] = "DejaVuLGCSansMono.ttf",
+								["lineHeight"] = 0,
+								["shadowColor"] = {
+									["a"] = 1,
+									["b"] = 0,
+									["g"] = 0,
+									["r"] = 0,
+								},
+								["shadowOffset"] = {
+									["horz"] = 2,
+									["vert"] = 2,
+								},
+							},
+						},
+					},
+				},
+			},
+			["type"] = "Static",
+		},
+		["staticTmp"] = {
+			["children"] = {
+			},
+			["params"] = {
+				["bounds"] = {
+					[1] = {
+						["h"] = 20,
+						["w"] = 154,
+						["x"] = 154,
+						["y"] = 422,
+					},
+				},
+				["enabled"] = {
+					[1] = true,
+				},
+				["text"] = {
+					[1] = "static0",
+				},
+				["tooltip"] = {
+					[1] = "",
+				},
+				["visible"] = {
+					[1] = false,
+				},
+				["zindex"] = {
+					[1] = 2,
+				},
+			},
+			["skin"] = {
+				["params"] = {
+					["name"] = "staticSkin",
+					["textWrapping"] = true,
+				},
+				["states"] = {
+					["released"] = {
+						[1] = {
+							["text"] = {
+								["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
+								["lineHeight"] = 0,
+							},
+						},
+					},
+				},
+			},
+			["type"] = "Static",
+		},
+	},
+	["params"] = {
+		["bounds"] = {
+			[1] = {
+				["h"] = 489,
+				["w"] = 761,
+				["x"] = 0,
+				["y"] = 0,
+			},
+		},
+		["draggable"] = {
+			[1] = true,
+		},
+		["enabled"] = {
+			[1] = true,
+		},
+		["hasCursor"] = {
+			[1] = false,
+		},
+		["layout"] = {
+			[1] = {
+				["data"] = {
+					["anchorInfos"] = {
+						[1] = {
+							["bottom"] = {
+								["offset"] = 0,
+								["type"] = "min",
+							},
+							["left"] = {
+								["offset"] = 0,
+								["type"] = "max",
+							},
+							["right"] = {
+								["offset"] = 0,
+								["type"] = "max",
+							},
+							["top"] = {
+								["offset"] = 0,
+								["type"] = "min",
+							},
+						},
+					},
+					["count"] = 1,
+				},
+				["type"] = "anchor",
+			},
+		},
+		["lockFlow"] = {
+			[1] = false,
+		},
+		["modal"] = {
+			[1] = false,
+		},
+		["text"] = {
+			[1] = "New dialog",
+		},
+		["zOrder"] = {
+			[1] = 0,
+		},
+	},
+	["skin"] = {
+		["params"] = {
+			["headerHeight"] = 0,
+			["name"] = "windowSkin",
+		},
+		["states"] = {
+			["released"] = {
+				[1] = {
+					["bkg"] = {
+						["center_center"] = {
+							["a"] = 0,
+							["b"] = 0,
+							["g"] = 0,
+							["r"] = 0,
+						},
+					},
+				},
+			},
+		},
+	},
+	["type"] = "Window",
+}
