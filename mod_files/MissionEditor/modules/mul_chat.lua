@@ -98,7 +98,7 @@ base.print("----function createChat------")
     
     testStatic = Static.new()
     testStatic:setSkin(pNoVisible.sYellowText:getSkin())
-    testStatic:setBounds(0,0,widthChat,40)
+    testStatic:setBounds(0,0,widthChat,20)
     
     eMx,eMy,eMw = eMessage:getBounds()
 
@@ -173,7 +173,7 @@ function onShiftTab()
 	base.print("---onShiftTab---",getMode(),getAll())
 	debounceTime = os.time()
     setAll(false)
-    setMode(mode.write) 
+    setMode(mode.write)             
 end
 
 function onTab()
@@ -205,9 +205,9 @@ function chatJustClosed()
 end
     
 function resize(w, h)
-    window:setBounds(0, h/2-400, 720, 910)
+    window:setBounds(0, h/2-200, 360, 455)
     
-    box:setBounds(0, 55, 720, 800)
+    box:setBounds(0, 55, 360, 400)
 end
 
 --[[
@@ -262,13 +262,13 @@ function resizeEditMessage()
     pBtn:setBounds(x,eMy+newH+20,w,h)
     
     local x,y,w,h = box:getBounds()
-    box:setBounds(x,y,w,eMy+newH+634)
+    box:setBounds(x,y,w,eMy+newH+317)
     
     local x,y,w,h = pDown:getBounds()
     pDown:setBounds(x,y,w,eMy+newH+117)
     
     local x,y,w,h = window:getBounds()
-    window:setBounds(x,y,w,eMy+newH+744)
+    window:setBounds(x,y,w,eMy+newH+317+55)
 end
 
 function onChange_eMessage(self)
@@ -352,7 +352,7 @@ function addMessage(a_message, a_name, a_skin)
         setMode(mode.read)
     else
         updateListM()
-		updateListM() -- For the text enlarger mod, it didn't show the first chat message until I added this. WHAT THE FUCK
+		updateListM()
     end
 	
 	hideTimerTime = os.time()
@@ -392,7 +392,6 @@ function updateListM()
     local curMsg = vsScroll:getValue() + vsScroll:getThumbValue()  --#listMessages
     local curStatic = 1
     local num = 0     
-	
     if listMessages[curMsg] then    
         while curMsg > 0 and heightChat > (offset + listMessages[curMsg].height) do
             local msg = listMessages[curMsg]
@@ -435,7 +434,7 @@ function setMode(a_mode)
         window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:removeHotKeyCallback('Tab', onTab)
         window:setHasCursor(true)
-        window:setBounds(0, h/2-400, 72, 110)
+        window:setBounds(0, h/2-200, 36, 55)
     end
     
     if modeCur == "read" then
@@ -451,7 +450,7 @@ function setMode(a_mode)
         window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:removeHotKeyCallback('Tab', onTab)
         window:setHasCursor(false)
-        window:setBounds(0, h/2-400, 720, 910)
+        window:setBounds(0, h/2-200, 360, 455)
     end
     
     if modeCur == "write" then
@@ -467,7 +466,7 @@ function setMode(a_mode)
         window:addHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:addHotKeyCallback('Tab', onTab)
         window:setHasCursor(true)
-        window:setBounds(0, h/2-400, 720, 910)
+        window:setBounds(0, h/2-200, 360, 455)
     end    
     updateListM()
 end
