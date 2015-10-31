@@ -61,7 +61,7 @@ function create()
     
     pLentaTrigger = Lenta.new(window.pLentaTrig)
    -- pLentaTrigger:setBounds(main_w - (2 * main_w/3)+20,20, main_w/3, main_h/4)
-    pLentaTrigger:setBounds(main_w - (600)-20,20, 600, main_h/2)
+    pLentaTrigger:setBounds(main_w - (1200)-20,20, 1200, main_h/2)
     pLentaTrigger:setSeparator(true)
 
     pLentaRadio = Lenta.new(window.pLentaRadio)
@@ -76,7 +76,7 @@ end
 
 function setOffsetLentaTrigger(a_h)
     if pLentaTrigger then
-        pLentaTrigger:setBounds(main_w - 620,20+a_h, 600, main_h/2)
+        pLentaTrigger:setBounds(main_w - 1220,20+a_h, 1200, main_h/2)
     end
 end
 
@@ -110,7 +110,7 @@ function clear()
     sMain:setVisible(false)
     
     if pLentaTrigger then
-        pLentaTrigger:setBounds(main_w - 620,20, 600, main_h/2) --возвращаем назад для новой миссии
+        pLentaTrigger:setBounds(main_w - 1220,20, 1200, main_h/2) --возвращаем назад для новой миссии
     end
 end
 

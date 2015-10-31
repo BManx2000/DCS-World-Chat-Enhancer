@@ -49,8 +49,9 @@ local modeCur = mode.min
 local noReadMsg = 0
 local curValueWheel = 0
 local newMsg = false
-local bHideBtnMail = false
 local slotByUnitId = {}
+local hideTimerTime = nil
+local debounceTime = nil
 
 -------------------------------------------------------------------------------
 -- 
@@ -58,7 +59,8 @@ function create()
 base.print("----function createChat------")
     window = DialogLoader.spawnDialogFromFile(base.dialogsDir .. 'mul_chat.dlg', cdata)
   --  WindowResizer.new(window) 
-
+	window:setUpdateFunction(update)
+  
     box         = window.Box
     pNoVisible  = window.pNoVisible
     pDown       = box.pDown
@@ -66,12 +68,10 @@ base.print("----function createChat------")
     pBtn        = pDown.pBtn
     tbAll       = pBtn.tbAll
     pMsg        = box.pMsg
-    btnMail     = window.btnMail
     vsScroll    = box.vsScroll
     sAll        = pBtn.sAll
     sAllies     = pBtn.sAllies
 
-    btnMail.onChange = onChange_btnMail
     vsScroll.onChange = onChange_vsScroll
     eMessage.onChange = onChange_eMessage    
     tbAll.onChange = onChange_tbAll
@@ -98,7 +98,7 @@ base.print("----function createChat------")
     
     testStatic = Static.new()
     testStatic:setSkin(pNoVisible.sYellowText:getSkin())
-    testStatic:setBounds(0,0,widthChat,20)
+    testStatic:setBounds(0,0,widthChat,40)
     
     eMx,eMy,eMw = eMessage:getBounds()
 
@@ -125,7 +125,10 @@ base.print("----function createChat------")
                 base.print("---tbAll:getState()---",tbAll:getState())
                 net.chat_send(text, tbAll:getState()) 
                 onChatMessage(text, net.get_my_player_id())
-            end
+				setMode(mode.read)
+            else
+				setMode(mode.min)
+			end
             eMessage:setText("")
             eMessage:setSelectionNew(0,0,0,0)
             resizeEditMessage()
@@ -160,41 +163,51 @@ function updateSlots()
 end
 
 function onCtrlTab()   
-base.print("---onCtrlTab---",getMode(),getAll()) 
-    if (getMode() == mode.write) and (getAll() == false) then
-        setMode(mode.min)  
-    else
-        setAll(false)
-        setMode(mode.write)  
-    end
+	if chatJustClosed() then return end
+	base.print("---onCtrlTab---",getMode(),getAll()) 
+	debounceTime = os.time()
 end
 
 function onShiftTab()
-base.print("---onShiftTab---",getMode(),getAll())
-    if (getMode() == mode.write) and (getAll() == true) then
-        setMode(mode.min)
-    else
-        setAll(true)
-        setMode(mode.write)            
-    end 
+	if chatJustClosed() then return end
+	base.print("---onShiftTab---",getMode(),getAll())
+	debounceTime = os.time()
+    setAll(false)
+    setMode(mode.write) 
 end
 
 function onTab()
-base.print("---onTab---",getMode(),getAll()) 
-    if (getMode() ~= mode.read) then
-        setMode(mode.read)
-    else
+	if chatJustClosed() then return end
+	base.print("---onTab---",getMode(),getAll())
+	debounceTime = os.time()
+    if (getMode() ~= mode.write) then
+	    base.print("entering write mode") 
+		setAll(true)
+        setMode(mode.write)
+    elseif getAll() == false then
+		base.print("changing to allchat within write mode")
+		setAll(true)
+	elseif hideTimerTime then
+		base.print("entering read mode from write mode")
+		setMode(mode.read)
+	else
+		base.print("closing write mode")
         setMode(mode.min)    
     end
 end
 
+function chatTimerActive()
+	return hideTimerTime
+end
 
+function chatJustClosed()
+	return debounceTime
+end
     
 function resize(w, h)
-    window:setBounds(0, h/2-200, 360, 455)
+    window:setBounds(0, h/2-400, 720, 910)
     
-    btnMail:setBounds(12, 0, 24, 55)
-    box:setBounds(0, 55, 360, 400)
+    box:setBounds(0, 55, 720, 800)
 end
 
 --[[
@@ -212,14 +225,6 @@ function onChange_tbAll()
         sAll:setSkin(skinNoSelAll)
         sAllies:setSkin(skinSelAllies)
     end
-end
-
-function onChange_btnMail()
-    if modeCur == "min" then
-        setMode("read")  
-    else
-        setMode("min")  
-    end    
 end
 
 function onChange_vsScroll(self)
@@ -257,13 +262,13 @@ function resizeEditMessage()
     pBtn:setBounds(x,eMy+newH+20,w,h)
     
     local x,y,w,h = box:getBounds()
-    box:setBounds(x,y,w,eMy+newH+317)
+    box:setBounds(x,y,w,eMy+newH+634)
     
     local x,y,w,h = pDown:getBounds()
     pDown:setBounds(x,y,w,eMy+newH+117)
     
     local x,y,w,h = window:getBounds()
-    window:setBounds(x,y,w,eMy+newH+317+55)
+    window:setBounds(x,y,w,eMy+newH+744)
 end
 
 function onChange_eMessage(self)
@@ -343,11 +348,30 @@ function addMessage(a_message, a_name, a_skin)
     curValueWheel = #listMessages
     
     if modeCur == "min" then
-        noReadMsg = noReadMsg + 1
-        btnMail:setText(noReadMsg)
+		updateListM()
+        setMode(mode.read)
     else
         updateListM()
+		updateListM() -- For the text enlarger mod, it didn't show the first chat message until I added this. WHAT THE FUCK
     end
+	
+	hideTimerTime = os.time()
+end
+
+function update()
+	if debounceTime and (os.difftime(os.time(), debounceTime) > 0.1) then
+		debounceTime = nil
+	end
+
+	if hideTimerTime then
+		local diffTime = os.difftime(os.time(), hideTimerTime)
+		if diffTime > 10 then
+			hideTimerTime = nil
+			if getMode() == mode.read then
+				setMode(mode.min)
+			end
+		end
+	end
 end
 
 function show(b)
@@ -368,6 +392,7 @@ function updateListM()
     local curMsg = vsScroll:getValue() + vsScroll:getThumbValue()  --#listMessages
     local curStatic = 1
     local num = 0     
+	
     if listMessages[curMsg] then    
         while curMsg > 0 and heightChat > (offset + listMessages[curMsg].height) do
             local msg = listMessages[curMsg]
@@ -395,24 +420,13 @@ function getAll()
 end
 
 function setHideMail(b)
-    bHideBtnMail = b
-    setMode(modeCur)
-end
 
-function setVisibleBtnMail(b)
-    if bHideBtnMail == true then
-        btnMail:setVisible(false)
-    else
-        btnMail:setVisible(b)
-    end    
 end
 
 function setMode(a_mode)
     modeCur = a_mode 
     if modeCur == "min" then
         box:setVisible(false)
-        setVisibleBtnMail(true)
-        btnMail:setText(noReadMsg)
         box:setSkin(skinModeRead)
         eMessage:setFocused(false)
         DCS.banKeyboard(false)
@@ -421,13 +435,11 @@ function setMode(a_mode)
         window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:removeHotKeyCallback('Tab', onTab)
         window:setHasCursor(true)
-        window:setBounds(0, h/2-200, 36, 55)
-        btnMail:setBounds(12, 0, 24, 55)
+        window:setBounds(0, h/2-400, 72, 110)
     end
     
     if modeCur == "read" then
         box:setVisible(true)
-        setVisibleBtnMail(false)
         box:setSkin(skinModeRead)
         noReadMsg = 0
         vsScroll:setVisible(false)
@@ -439,12 +451,11 @@ function setMode(a_mode)
         window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:removeHotKeyCallback('Tab', onTab)
         window:setHasCursor(false)
-        window:setBounds(0, h/2-200, 360, 455)
+        window:setBounds(0, h/2-400, 720, 910)
     end
     
     if modeCur == "write" then
         box:setVisible(true)
-        setVisibleBtnMail(false)
         box:setSkin(skinModeWrite)
         noReadMsg = 0
         vsScroll:setVisible(true)
@@ -456,7 +467,7 @@ function setMode(a_mode)
         window:addHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:addHotKeyCallback('Tab', onTab)
         window:setHasCursor(true)
-        window:setBounds(0, h/2-200, 360, 455)
+        window:setBounds(0, h/2-400, 720, 910)
     end    
     updateListM()
 end

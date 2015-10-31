@@ -230,12 +230,8 @@ end
 function onShowChatAll()
 print("----onShowChatAll()----",DCS.isMultiplayer()) 
     if (DCS.isMultiplayer() == true) then  
-        if (Chat.getMode() == Chat.mode.write) and (Chat.getAll() == true) then
-            Chat.setMode(Chat.mode.min)
-        else
-            Chat.setAll(true)
-            Chat.setMode(Chat.mode.write)            
-        end    
+		Chat.setAll(false)
+		Chat.setMode(Chat.mode.write)
         Chat.show(true)
     else
         Chat.show(false)
@@ -245,12 +241,6 @@ end
 function onShowChatTeam()
 print("----onShowChatTeam()----",DCS.isMultiplayer()) 
     if (DCS.isMultiplayer() == true) then    
-        if (Chat.getMode() == Chat.mode.write) and (Chat.getAll() == false) then
-            Chat.setMode(Chat.mode.min)  
-        else
-            Chat.setAll(false)
-            Chat.setMode(Chat.mode.write)  
-        end
         Chat.show(true)
     else
         Chat.show(false)
@@ -260,11 +250,16 @@ end
 function onShowChatRead()
 print("----onShowChatRead()----",DCS.isMultiplayer())     
     if (DCS.isMultiplayer() == true) then
-        if (Chat.getMode() ~= Chat.mode.read) then
-            Chat.setMode(Chat.mode.read)
-        else
-            Chat.setMode(Chat.mode.min)    
-        end
+		if (Chat.getMode() ~= Chat.mode.write) and not Chat.chatJustClosed() then
+			Chat.setAll(true)
+			Chat.setMode(Chat.mode.write)
+		elseif Chat.getAll() == false then
+			Chat.setAll(true)
+		elseif Chat.chatTimerActive() then
+			Chat.setMode(Chat.mode.read)
+		else
+			Chat.setMode(Chat.mode.min)    
+		end
         Chat.show(true)
     else
         Chat.show(false)

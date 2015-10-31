@@ -14,7 +14,7 @@ dialog = {
 								["bounds"] = {
 									[1] = {
 										["h"] = 18,
-										["w"] = 281,
+										["w"] = 562,
 										["x"] = 14,
 										["y"] = 43,
 									},
@@ -426,9 +426,9 @@ dialog = {
 						["bounds"] = {
 							[1] = {
 								["h"] = 149,
-								["w"] = 339,
+								["w"] = 678,
 								["x"] = 9,
-								["y"] = 267,
+								["y"] = 534,
 							},
 						},
 						["enabled"] = {
@@ -464,8 +464,8 @@ dialog = {
 					["params"] = {
 						["bounds"] = {
 							[1] = {
-								["h"] = 209,
-								["w"] = 316,
+								["h"] = 418,
+								["w"] = 632,
 								["x"] = 17,
 								["y"] = 39,
 							},
@@ -503,9 +503,9 @@ dialog = {
 					["params"] = {
 						["bounds"] = {
 							[1] = {
-								["h"] = 274,
+								["h"] = 548,
 								["w"] = 16,
-								["x"] = 344,
+								["x"] = 688,
 								["y"] = 10,
 							},
 						},
@@ -554,8 +554,8 @@ dialog = {
 			["params"] = {
 				["bounds"] = {
 					[1] = {
-						["h"] = 450,
-						["w"] = 360,
+						["h"] = 900,
+						["w"] = 720,
 						["x"] = 0,
 						["y"] = 55,
 					},
@@ -586,67 +586,6 @@ dialog = {
 				},
 			},
 			["type"] = "Panel",
-		},
-		["btnMail"] = {
-			["children"] = {
-			},
-			["params"] = {
-				["bounds"] = {
-					[1] = {
-						["h"] = 55,
-						["w"] = 24,
-						["x"] = 12,
-						["y"] = 222,
-					},
-				},
-				["enabled"] = {
-					[1] = true,
-				},
-				["sound"] = {
-				},
-				["text"] = {
-					[1] = "",
-				},
-				["tooltip"] = {
-					[1] = "",
-				},
-				["visible"] = {
-					[1] = true,
-				},
-				["zindex"] = {
-					[1] = 0,
-				},
-			},
-			["skin"] = {
-				["params"] = {
-					["name"] = "buttonSkin_chat_mail_ikon",
-				},
-				["states"] = {
-					["pressed"] = {
-						[1] = {
-							["bkg"] = {
-								["center_bottom"] = "$nil$",
-								["center_center"] = "$nil$",
-								["center_top"] = "$nil$",
-								["file"] = "$nil$",
-								["insets"] = {
-									["bottom"] = "$nil$",
-									["left"] = "$nil$",
-									["right"] = "$nil$",
-									["top"] = "$nil$",
-								},
-								["left_bottom"] = "$nil$",
-								["left_center"] = "$nil$",
-								["left_top"] = "$nil$",
-								["right_bottom"] = "$nil$",
-								["right_center"] = "$nil$",
-								["right_top"] = "$nil$",
-							},
-						},
-					},
-				},
-			},
-			["type"] = "Button",
 		},
 		["pNoVisible"] = {
 			["children"] = {
@@ -748,6 +687,7 @@ dialog = {
 										["vertAlign"] = {
 											["type"] = "min",
 										},
+										["fontSize"] = 24,
 									},
 								},
 							},
@@ -856,6 +796,7 @@ dialog = {
 										["vertAlign"] = {
 											["type"] = "min",
 										},
+										["fontSize"] = 24,
 									},
 								},
 							},
@@ -977,6 +918,7 @@ dialog = {
 										["vertAlign"] = {
 											["type"] = "min",
 										},
+										["fontSize"] = 24,
 									},
 								},
 							},
@@ -1111,6 +1053,7 @@ dialog = {
 										["vertAlign"] = {
 											["type"] = "min",
 										},
+										["fontSize"] = 24,
 									},
 								},
 							},
@@ -1660,7 +1603,7 @@ dialog = {
 											["r"] = 0.9843137254902,
 										},
 										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
-										["fontSize"] = 14,
+										["fontSize"] = 24,
 										["lineHeight"] = 0,
 									},
 								},
