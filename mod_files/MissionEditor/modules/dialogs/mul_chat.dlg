@@ -378,7 +378,7 @@ dialog = {
 								["bounds"] = {
 									[1] = {
 										["h"] = 20,
-										["w"] = 61,
+										["w"] = 272,
 										["x"] = 13,
 										["y"] = 6,
 									},
@@ -464,10 +464,10 @@ dialog = {
 					["params"] = {
 						["bounds"] = {
 							[1] = {
-								["h"] = 310,
+								["h"] = 353,
 								["w"] = 468,
 								["x"] = 17,
-								["y"] = 39,
+								["y"] = 10,
 							},
 						},
 						["enabled"] = {
@@ -503,7 +503,7 @@ dialog = {
 					["params"] = {
 						["bounds"] = {
 							[1] = {
-								["h"] = 406,
+								["h"] = 360,
 								["w"] = 16,
 								["x"] = 510,
 								["y"] = 10,
@@ -1679,7 +1679,7 @@ dialog = {
 			[1] = false,
 		},
 		["text"] = {
-			[1] = "New dialog",
+			[1] = "$chat",
 		},
 		["zOrder"] = {
 			[1] = 1,
@@ -1687,8 +1687,16 @@ dialog = {
 	},
 	["skin"] = {
 		["params"] = {
-			["headerHeight"] = 0,
 			["name"] = "windowSkin",
+		},
+		["skins"] = {
+			["header"] = {
+				["skinData"] = {
+					["params"] = {
+						["hasCloseButton"] = false,
+					},
+				},
+			},
 		},
 		["states"] = {
 			["released"] = {

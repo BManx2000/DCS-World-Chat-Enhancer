@@ -130,18 +130,17 @@ function onSimulationStart()
     
     gameMessages.show()
     if (DCS.isMultiplayer() == true) then
+        Select_role.onSimulationStart() 
         if not _OLD_NET_GUI and DCS.isTrackPlaying() == false then
             Select_role.show(true)
         end 
 
-        Select_role.onSimulationStart() 
-        
         if DCS.getPause() == true then
             gameMessages.showPause()
         else
             gameMessages.hidePause()
-        end   
-        Chat.updateSlots()        
+        end        
+        Chat.updateSlots()          
         return
     end
 	
