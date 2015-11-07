@@ -25,7 +25,9 @@ local textutil          = require('textutil')
 local EditBox           = require('EditBox')
 local DCS               = require('DCS')
 local Censorship        = require('censorship')
-
+local Tools 			= require('tools')
+local lfs 				= require('lfs')
+local Skin				= require('Skin')
 
 i18n.setup(_M)
 
@@ -35,6 +37,7 @@ cdata =
     ALLIES      = _("ALLIES"),
     ALL         = _("ALL"),
     MESSAGE     = _("MESSAGE:"),
+    chat        = _("Chat"),
 }
 
 local bCreated = false
@@ -51,13 +54,13 @@ local curValueWheel = 0
 local newMsg = false
 local bHideBtnMail = false
 local slotByUnitId = {}
+local chatPos = {} 
 
 -------------------------------------------------------------------------------
 -- 
 function create()
 base.print("----function createChat------")
     window = DialogLoader.spawnDialogFromFile(base.dialogsDir .. 'mul_chat.dlg', cdata)
-  --  WindowResizer.new(window) 
 
     box         = window.Box
     pNoVisible  = window.pNoVisible
@@ -133,15 +136,32 @@ base.print("----function createChat------")
     end
 
     w, h = Gui.GetWindowSize()
+    
+    chatPos.x = 0
+    chatPos.y = h/2-200
+    
+    loadChatPos()
+    
     resize(w, h)
     resizeEditMessage()
-    
     
     setMode("min")
     
     Censorship.init()
-    
     bCreated = true
+end
+
+function loadChatPos()
+    local tbl = Tools.safeDoFile(lfs.writedir() .. 'MissionEditor/ChatPosition.lua', false)
+    if (tbl and tbl.chatPos and tbl.chatPos.x and tbl.chatPos.y) then
+        chatPos.x = tbl.chatPos.x
+        chatPos.y = tbl.chatPos.y
+    end      
+end
+
+function saveChatPos()
+    chatPos.x, chatPos.y = window:getPosition()
+    U.saveInFile(chatPos, 'chatPos', lfs.writedir() .. 'MissionEditor/ChatPosition.lua')	
 end
 
 function updateSlots()
@@ -191,10 +211,10 @@ end
 
     
 function resize(w, h)
-    window:setBounds(0, h/2-400, 720, 910)
+    window:setBounds(chatPos.x, chatPos.y, 720, 910)
     
     btnMail:setBounds(12, 0, 48, 110)
-    box:setBounds(0, 55, 720, 800)
+    box:setBounds(0, 0, 720, 800)
 end
 
 --[[
@@ -257,13 +277,14 @@ function resizeEditMessage()
     pBtn:setBounds(x,eMy+newH+20,w,h)
     
     local x,y,w,h = box:getBounds()
-    box:setBounds(x,y,w,eMy+newH+634)
+    box:setBounds(x,0,w,eMy+newH+634)
     
     local x,y,w,h = pDown:getBounds()
     pDown:setBounds(x,y,w,eMy+newH+117)
     
     local x,y,w,h = window:getBounds()
-    window:setBounds(x,y,w,eMy+newH+744)
+   -- window:setBounds(x,y,w,eMy+newH+317+55)
+   window:setSize(w,eMy+newH+744)
 end
 
 function onChange_eMessage(self)
@@ -356,6 +377,11 @@ function show(b)
     if bCreated == false then
         create()
     end
+    
+    if b == false then
+        saveChatPos()
+    end
+    
     onChange_tbAll()
     window:setVisible(b)
 end
@@ -369,7 +395,6 @@ function updateListM()
     local curMsg = vsScroll:getValue() + vsScroll:getThumbValue()  --#listMessages
     local curStatic = 1
     local num = 0     
-	
     if listMessages[curMsg] then    
         while curMsg > 0 and heightChat > (offset + listMessages[curMsg].height) do
             local msg = listMessages[curMsg]
@@ -419,11 +444,15 @@ function setMode(a_mode)
         eMessage:setFocused(false)
         DCS.banKeyboard(false)
         print("---banKeyboard(false)----")
+        window:setSkin(Skin.windowSkinChatMin())
         window:removeHotKeyCallback('Shift+Tab', onShiftTab)
         window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
-        window:removeHotKeyCallback('Tab', onTab)
-        window:setHasCursor(true)
-        window:setBounds(0, h/2-400, 72, 110)
+        window:removeHotKeyCallback('Tab', onTab) 
+        window:setVisible(false)        
+        window:setHasCursor(false)
+        window:setVisible(true)
+        --window:setBounds(0, h/2-200, 36, 55)        
+        window:setSize(72, 170)
         btnMail:setBounds(12, 0, 48, 110)
     end
     
@@ -437,11 +466,15 @@ function setMode(a_mode)
         eMessage:setFocused(false)
         DCS.banKeyboard(false)
         print("---banKeyboard(false)----")
+        window:setSkin(Skin.windowSkinChatMin())
         window:removeHotKeyCallback('Shift+Tab', onShiftTab)
         window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:removeHotKeyCallback('Tab', onTab)
+        window:setVisible(false)
         window:setHasCursor(false)
-        window:setBounds(0, h/2-400, 720, 910)
+        window:setVisible(true)
+        --window:setBounds(0, h/2-200, 360, 455)
+        window:setSize(720, 910)
     end
     
     if modeCur == "write" then
@@ -450,15 +483,19 @@ function setMode(a_mode)
         box:setSkin(skinModeWrite)
         noReadMsg = 0
         vsScroll:setVisible(true)
-        pDown:setVisible(true)
-        eMessage:setFocused(true)
+        pDown:setVisible(true)        
         DCS.banKeyboard(true)
-        print("---banKeyboard(true)----")
+        --print("---banKeyboard(true)----")
+        window:setSkin(Skin.windowSkinChatWrite())
         window:addHotKeyCallback('Shift+Tab', onShiftTab)
         window:addHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:addHotKeyCallback('Tab', onTab)
+        window:setVisible(false)
         window:setHasCursor(true)
-        window:setBounds(0, h/2-400, 720, 910)
+        window:setVisible(true)
+        eMessage:setFocused(true)
+        --window:setBounds(0, h/2-200, 360, 455)
+        window:setSize(720, 910)
     end    
     updateListM()
 end
