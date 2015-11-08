@@ -28,6 +28,7 @@ local Censorship        = require('censorship')
 local Tools 			= require('tools')
 local lfs 				= require('lfs')
 local Skin				= require('Skin')
+local ListBoxItem       = require('ListBoxItem')
 
 i18n.setup(_M)
 
@@ -37,7 +38,13 @@ cdata =
     ALLIES      = _("ALLIES"),
     ALL         = _("ALL"),
     MESSAGE     = _("MESSAGE:"),
+    unknown     = _("unknown_chat","unknown"),
+    player      = _("player_chat","player"),
     chat        = _("Chat"),
+    
+    query           = _("Join requests:"),
+    allow_selected  = _("allow selected"),
+    deny_all        = _("deny all"),
 }
 
 local bCreated = false
@@ -55,6 +62,9 @@ local newMsg = false
 local bHideBtnMail = false
 local slotByUnitId = {}
 local chatPos = {} 
+local listStatics = {}
+
+local bQueryEnable = true
 
 -------------------------------------------------------------------------------
 -- 
@@ -73,11 +83,18 @@ base.print("----function createChat------")
     vsScroll    = box.vsScroll
     sAll        = pBtn.sAll
     sAllies     = pBtn.sAllies
+    pQuery      = box.pQuery
+    bAllowSelected = pQuery.bAllowSelected
+    bDenyAll    = pQuery.bDenyAll
+    lbPlayers   = pQuery.lbPlayers
+    
 
     btnMail.onChange = onChange_btnMail
     vsScroll.onChange = onChange_vsScroll
     eMessage.onChange = onChange_eMessage    
     tbAll.onChange = onChange_tbAll
+    bAllowSelected.onChange = onChange_bAllowSelected
+    bDenyAll.onChange = onChange_bDenyAll
     
     pMsg:addMouseWheelCallback(onMouseWheel_eMessage)
     
@@ -99,9 +116,13 @@ base.print("----function createChat------")
     skinNoSelAll    = pNoVisible.sSelAll:getSkin()
     skinSelAll      = pNoVisible.sNoSelAll:getSkin()
     
-    testStatic = Static.new()
-    testStatic:setSkin(pNoVisible.sYellowText:getSkin())
-    testStatic:setBounds(0,0,widthChat,40)
+    skinMail = btnMail:getSkin()
+    skinMailAndQuery = pNoVisible.btnMailAndQuery:getSkin()
+    
+    for k=0,9 do
+        local newItem = ListBoxItem.new("Chizh")
+        lbPlayers:insertItem(newItem)
+    end
     
     eMx,eMy,eMw = eMessage:getBounds()
 
@@ -112,6 +133,13 @@ base.print("----function createChat------")
         blue        = pNoVisible.eBlueText:getSkin(),
         sys         = pNoVisible.eWhiteText:getSkin(),
     }
+    
+    testStatic = EditBox.new()
+    testStatic:setSkin(typesMessage.sys)
+    testStatic:setReadOnly(true)   
+    testStatic:setTextWrapping(true)  
+    testStatic:setMultiline(true) 
+    testStatic:setBounds(0,0,widthChat,40)
     
     listStatics = {}
     
@@ -126,14 +154,20 @@ base.print("----function createChat------")
             local text = eMessage:getText()
             if text ~= "\n" and text ~= nil then
                 base.print("---tbAll:getState()---",tbAll:getState())
-                net.chat_send(text, tbAll:getState()) 
-                onChatMessage(text, net.get_my_player_id())
+                net.send_chat(text, tbAll:getState()) 
+                --onChatMessage(text, net.get_my_player_id())
             end
             eMessage:setText("")
             eMessage:setSelectionNew(0,0,0,0)
             resizeEditMessage()
         end
     end
+	
+    testE = EditBox.new()    
+    testE:setTextWrapping(true)  
+    testE:setMultiline(true)  
+    testE:setBounds(0,0,eMw,20)
+    testE:setSkin(eMessage:getSkin())	
 
     w, h = Gui.GetWindowSize()
     
@@ -147,8 +181,34 @@ base.print("----function createChat------")
     
     setMode("min")
     
+    
+    window:addPositionCallback(positionCallback) 
+    
+    positionCallback()
     Censorship.init()
     bCreated = true
+end
+
+function positionCallback()
+    local x, y = window:getPosition()
+
+    if x < 0 then
+        x = 0
+    end
+
+    if y < 0 then
+        y = 0
+    end
+
+    if x > (w-360) then
+        x = w-360
+    end
+
+    if y > (h-400)then
+        y = h-400
+    end
+
+    window:setPosition(x, y)
 end
 
 function loadChatPos()
@@ -211,10 +271,22 @@ end
 
     
 function resize(w, h)
-    window:setBounds(chatPos.x, chatPos.y, 720, 910)
+    window:setBounds(chatPos.x, chatPos.y, 720, 910+195)
     
     btnMail:setBounds(12, 0, 48, 110)
-    box:setBounds(0, 0, 720, 800)
+    box:setBounds(0, 0, 720, 800+195)
+    
+    pQuery:setBounds(0, 700, 360, 195)
+end
+
+function onChange_bAllowSelected()
+    
+ 
+end
+
+function onChange_bDenyAll()
+    
+  
 end
 
 --[[
@@ -263,11 +335,6 @@ end
 function resizeEditMessage()
     local text = eMessage:getText()
     
-    testE = EditBox.new()    
-    testE:setTextWrapping(true)  
-    testE:setMultiline(true)  
-    testE:setBounds(0,0,eMw,20)
-    testE:setSkin(eMessage:getSkin())
     testE:setText(text)
     local newW, newH = testE:calcSize()  
     base.print("---newW, newH =", newH)
@@ -277,14 +344,15 @@ function resizeEditMessage()
     pBtn:setBounds(x,eMy+newH+20,w,h)
     
     local x,y,w,h = box:getBounds()
-    box:setBounds(x,0,w,eMy+newH+634)
+    box:setBounds(x,0,w,eMy+newH+634+195)
+    pQuery:setBounds(0, eMy+newH+634, 360, 195)
     
     local x,y,w,h = pDown:getBounds()
     pDown:setBounds(x,y,w,eMy+newH+117)
     
     local x,y,w,h = window:getBounds()
    -- window:setBounds(x,y,w,eMy+newH+317+55)
-   window:setSize(w,eMy+newH+744)
+   window:setSize(w,eMy+newH+744+55+195)
 end
 
 function onChange_eMessage(self)
@@ -368,7 +436,6 @@ function addMessage(a_message, a_name, a_skin)
         btnMail:setText(noReadMsg)
     else
         updateListM()
-        updateListM() -- For the text enlarger mod, it didn't show the first chat message until I put this line in. WHAT THE FUCK
     end
 end
 
@@ -435,7 +502,12 @@ function setVisibleBtnMail(b)
 end
 
 function setMode(a_mode)
+
     modeCur = a_mode 
+    
+    if window == nil then
+        return
+    end
     if modeCur == "min" then
         box:setVisible(false)
         setVisibleBtnMail(true)
@@ -443,7 +515,7 @@ function setMode(a_mode)
         box:setSkin(skinModeRead)
         eMessage:setFocused(false)
         DCS.banKeyboard(false)
-        print("---banKeyboard(false)----")
+        --print("---banKeyboard(false)----")
         window:setSkin(Skin.windowSkinChatMin())
         window:removeHotKeyCallback('Shift+Tab', onShiftTab)
         window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
@@ -454,6 +526,11 @@ function setMode(a_mode)
         --window:setBounds(0, h/2-200, 36, 55)        
         window:setSize(72, 170)
         btnMail:setBounds(12, 0, 48, 110)
+        if bQueryEnable then
+            btnMail:setSkin(skinMail)
+        else
+            btnMail:setSkin(skinMailAndQuery)
+        end
     end
     
     if modeCur == "read" then
@@ -465,7 +542,7 @@ function setMode(a_mode)
         pDown:setVisible(false)
         eMessage:setFocused(false)
         DCS.banKeyboard(false)
-        print("---banKeyboard(false)----")
+        --print("---banKeyboard(false)----")
         window:setSkin(Skin.windowSkinChatMin())
         window:removeHotKeyCallback('Shift+Tab', onShiftTab)
         window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
@@ -474,7 +551,8 @@ function setMode(a_mode)
         window:setHasCursor(false)
         window:setVisible(true)
         --window:setBounds(0, h/2-200, 360, 455)
-        window:setSize(720, 910)
+        window:setSize(720, 910+195)
+        pQuery:setBounds(0, 700, 360, 195)
     end
     
     if modeCur == "write" then
@@ -495,7 +573,8 @@ function setMode(a_mode)
         window:setVisible(true)
         eMessage:setFocused(true)
         --window:setBounds(0, h/2-200, 360, 455)
-        window:setSize(720, 910)
+        window:setSize(720, 910+195)
+        pQuery:setBounds(0, 700, 360, 195)
     end    
     updateListM()
 end
@@ -504,49 +583,93 @@ function getMode()
     return modeCur
 end
 
-function onGameEvent(eventName,arg1,arg2,arg3,arg4) 
+local function parseSide(a_side)
+    if a_side == 0 then
+        return _("NEUTRAL_chat","NEUTRAL")
+    elseif a_side == 1 then
+        return _("RED_chat","RED")
+    elseif a_side == 2 then
+        return _("BLUE_chat","BLUE")
+    else
+        return cdata.unknown
+    end
+end
+
+function getPlayerInfo(a_id)
+    local player_info = net.get_player_info(a_id)
+    if player_info then
+        return parseSide(player_info.side).." "..cdata.player.." "..player_info.name
+    end
+    return cdata.unknown.." "..cdata.player.." "..cdata.unknown
+end
+
+local function getPlayerName(a_id)
+    if a_id == 0 then 
+        return _("AI")
+    end    
+    local player_info = net.get_player_info(a_id)
+    if player_info then
+        return player_info.name
+    end
+    return cdata.unknown
+end
+
+local function getPlayerName2(a_id)
+    if a_id == 0 then 
+        return _("AI")
+    end    
+    local player_info = net.get_player_info(a_id)
+    if player_info then
+        return cdata.player.." "..player_info.name
+    end
+    return cdata.unknown
+end
+
+function onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7) 
     if eventName == "crash" then
-        local player_info = net.get_player_info(arg1)
-        onChatMessage(base.string.format("crash %s",player_info.name))
+        local unitType = slotByUnitId[arg2].type
+        onChatMessage(base.string.format("%s ".._("on").." %s ".._("crashed"),getPlayerInfo(arg1),unitType))
     elseif eventName == "eject" then
-        local player_info = net.get_player_info(arg1)
-        onChatMessage(base.string.format("eject %s",player_info.name))
+        local unitType = slotByUnitId[arg2].type
+        onChatMessage(base.string.format("%s ".._("on").." %s ".._("ejected"),getPlayerInfo(arg1),unitType))
     elseif eventName == "takeoff" then
-        local player_info = net.get_player_info(arg1)
-        onChatMessage(base.string.format("takeoff %s in %s",player_info.name, arg3))
+        local unitType = slotByUnitId[arg2].type
+        onChatMessage(base.string.format("%s ".._("on").." %s ".._("took off from").." %s",getPlayerInfo(arg1),unitType,arg3))
     elseif eventName == "landing" then
-        local player_info = net.get_player_info(arg1)
-        onChatMessage(base.string.format("landing %s in %s",player_info.name, arg3))
+        local unitType = slotByUnitId[arg2].type
+        onChatMessage(base.string.format("%s ".._("on").." %s ".._("landed at").." %s",getPlayerInfo(arg1),unitType,arg3))
     elseif eventName == "mission_end" then
-        onChatMessage(base.string.format("mission_end winer %s  %s",arg1, arg2))
+        onChatMessage(base.string.format(_("Mission is over.")))
         if DCS.isServer() == true then
             net.load_next_mission() 
         end            
-    elseif eventName == "kill" then
-        local player_info = net.get_player_info(arg1)
-        local killer_info = net.get_player_info(arg3)
-        onChatMessage(base.string.format("kill %s  %s %s",player_info.name, arg2, killer_info.name))
+    elseif eventName == "kill" then   --onGameEvent(kill,idPlayer1,typeP1,coalition1, idP2,typeP2, coalition2, weapon)
+        local player = parseSide(arg3).." "..getPlayerName2(arg1).." ".._("on").." "..arg2
+        local killer = parseSide(arg6).." "..getPlayerName2(arg4).." ".._("on").." "..arg5
+        onChatMessage(player.." ".._("killed").." "..killer.." ".._("with").." "..arg7)
     elseif eventName == "self_kill" then 
-        local player_info = net.get_player_info(arg1)
-        onChatMessage(base.string.format("self_kill %s",player_info.name))
+        onChatMessage(base.string.format("%s ".._("killed himself"),getPlayerInfo(arg1)))
     elseif eventName == "change_slot" then 
-        local player_info = net.get_player_info(arg1)
         if arg2 ~= nil and slotByUnitId[arg2] ~= nil then
             local unitType = slotByUnitId[arg2].type
-            onChatMessage(base.string.format("change_slot %s %s",player_info.name,unitType)) 
+			local player_info = net.get_player_info(arg1)
+			local sideAccupied = "unknown"
+			if player_info then
+				sideAccupied = parseSide(player_info.side)
+			end
+			local player = parseSide(arg3).." "..getPlayerName2(arg1)
+            onChatMessage(base.string.format("%s ".._("occupied ").." %s %s",player,sideAccupied, unitType))			
         else
-            onChatMessage(base.string.format("%s ".._("returned to Spectators"),player_info.name))
+			local player = parseSide(arg3).." "..getPlayerName2(arg1)
+            onChatMessage(base.string.format("%s ".._("returned to Spectators"),player))
         end
     elseif eventName == "connect" then 
-        local player_info = net.get_player_info(arg1)
-        onChatMessage(base.string.format("onPlayerConnect %s %s",player_info.name,arg2))
-    elseif eventName == "disconnect" then 
-        onChatMessage(base.string.format("onPlayerDisconnect %s",arg2)) 
+        onChatMessage(base.string.format("%s ".._("connected to the server"),getPlayerName(arg1)))        
+    elseif eventName == "disconnect" then
+		local player = parseSide(arg3).." "..cdata.player.." "..arg2
+        onChatMessage(base.string.format("%s ".._("disconnected"), player))
     elseif eventName == "friendly_fire" then 
-        local player_info = net.get_player_info(arg1)
-        local player_info2 = net.get_player_info(arg4)
-        --local weaponName = base.get_weapon_display_name_by_wstype(wsType)
-        onChatMessage(base.string.format(_("friendly fire").." %s",player_info.name, arg2,player_info2.name))         
+        onChatMessage(base.string.format("%s ".._("hit allied").." %s ".._("with").." %s",getPlayerInfo(arg1),getPlayerName2(arg3), arg2))
     else
         onChatMessage(base.string.format("unknown %s %s %s",eventName, arg1,arg2,arg3))
     end    
