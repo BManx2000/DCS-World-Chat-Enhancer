@@ -80,7 +80,6 @@ onShowRadioMenu(size) --вызываетс€ при изменении размеров радио меню
 
 package.path = '.\\Scripts\\?.lua;'.. '.\\Scripts\\UI\\?.lua;'
 
-
 local progressBar = require('ProgressBarDialog')
 local GameMenu = require('GameMenu')
 local ChoiceOfRoleDialog = require('ChoiceOfRoleDialog')
@@ -94,6 +93,7 @@ local Chat		= require('mul_chat')
 local PlayersPool       = require('mul_playersPool')
 local net               = require('net')
 local MsgWindow			        = require('MsgWindow')
+local RPC = require('RPC')
 
 setmetatable(dxgui, {__index = dxguiWin})
 
@@ -125,6 +125,11 @@ print("------- onShowRadioMenu------",a_h)
     gameMessages.setOffsetLentaTrigger(a_h)
 end
 
+function RPC.method.onPrtScn(sender_id, ...)
+    local name = Chat.getPlayerInfo(sender_id)
+    net.send_chat_to(name .." ".. _("took a screenshot"), net.CHAT_ALL, 0)
+end
+
 function onSimulationStart()
     print("------- onSimulationStart------",DCS.getPause(),DCS.isMultiplayer(),DCS.isTrackPlaying())
     
@@ -140,7 +145,8 @@ function onSimulationStart()
         else
             gameMessages.hidePause()
         end        
-        Chat.updateSlots()          
+        Chat.updateSlots()  
+    
         return
     end
 	
@@ -173,9 +179,9 @@ function onSimulationFrame()
     gameMessages.updateAnimations()
 end 
 
-function onGameEvent(eventName,arg1,arg2,arg3,arg4) 
-    print("---onGameEvent(eventName)-----",eventName,arg1,arg2,arg3,arg4) 
-    Chat.onGameEvent(eventName,arg1,arg2,arg3,arg4) 
+function onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7) 
+    print("---onGameEvent(eventName)-----",eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7) 
+    Chat.onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7) 
 end
 
 function onShowPool()
@@ -314,8 +320,12 @@ function onShowGameMenu()
 end
 
 function onShowBriefing()
-    BriefingDialog.showUnpauseMessage(false)
-    BriefingDialog.show()    
+    if BriefingDialog.getVisible() == false then
+        BriefingDialog.showUnpauseMessage(false)
+        BriefingDialog.show()   
+    else
+        BriefingDialog.Fly_onChange()
+    end    
 end
 
 function onShowChat(say_all)
@@ -464,7 +474,6 @@ function traverseTable(_t, _numLevels, _tabString, filename, filter)
     _traverseTable(_t, _tabString, _tablesList, _numLevels, filter)
     
 end
-
 
 --------------------------------------------------------------------------------------------------------
 -- load a user-provided script
