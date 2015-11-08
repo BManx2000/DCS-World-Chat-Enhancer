@@ -1,13 +1,14 @@
 Chat Enhancer and Text Enlarger 0.2
-For DCS World 1.5.0.46175
+For DCS World 1.5.1.46722
 
-Note: This mod modifies files that are likely to be changed in future patches. Do not install this mod on newer versions than 1.5.0.46175 unless you have verified that the relevant files remain unchanged from that version.
+Note: This mod modifies files that are likely to be changed in future patches. Do not install this mod on newer versions than 1.5.1.46722 unless you have verified that the relevant files remain unchanged from that version.
 
 
 Features:
 
 Chat Enhancer:
   - The mail icon is deleted
+  - "Chizh" is deleted
   - The chat messages appear for 10 seconds every time there is a new message
   - Tab opens or closes the all-chat window
   - Shift+Tab opens the team-chat window
