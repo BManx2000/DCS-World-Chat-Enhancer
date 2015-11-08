@@ -124,7 +124,7 @@ base.print("----function createChat------")
     testStatic:setReadOnly(true)   
     testStatic:setTextWrapping(true)  
     testStatic:setMultiline(true) 
-    testStatic:setBounds(0,0,widthChat,40)
+    testStatic:setBounds(0,0,widthChat,27)
     
     listStatics = {}
     
