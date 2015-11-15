@@ -42,9 +42,6 @@ cdata =
     player      = _("player_chat","player"),
     chat        = _("Chat"),
     
-    query           = _("Join requests:"),
-    allow_selected  = _("allow selected"),
-    deny_all        = _("deny all"),
 }
 
 local bCreated = false
@@ -70,7 +67,7 @@ local bQueryEnable = true
 -------------------------------------------------------------------------------
 -- 
 function create()
-base.print("----function createChat------")
+base.print("----function createChat------",_("Tbilisi-Lochini"))
     window = DialogLoader.spawnDialogFromFile(base.dialogsDir .. 'mul_chat.dlg', cdata)
 	window:setUpdateFunction(update)
     box         = window.Box
@@ -85,9 +82,9 @@ base.print("----function createChat------")
     sAllies     = pBtn.sAllies
     
 
+    tbAll.onChange = onChange_tbAll
     vsScroll.onChange = onChange_vsScroll
     eMessage.onChange = onChange_eMessage    
-    tbAll.onChange = onChange_tbAll
     
     pMsg:addMouseWheelCallback(onMouseWheel_eMessage)
     
@@ -272,6 +269,8 @@ function resize(w, h)
     box:setBounds(0, 0, 360, 400)
 end
 
+
+
 --[[
     желтый - мои сообщения
     красный - игроки моей коалиции
@@ -440,7 +439,6 @@ function show(b)
         saveChatPos()
     end
     
-    onChange_tbAll()
     window:setVisible(b)
 end
 
@@ -453,7 +451,7 @@ function updateListM()
     local curMsg = vsScroll:getValue() + vsScroll:getThumbValue()  --#listMessages
     local curStatic = 1
     local num = 0     
-    if listMessages[curMsg] then    
+    if listMessages[curMsg] then          
         while curMsg > 0 and heightChat > (offset + listMessages[curMsg].height) do
             local msg = listMessages[curMsg]
             listStatics[curStatic]:setSkin(msg.skin)     
@@ -653,3 +651,7 @@ function onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7)
         "player_kill", playerID, event_.initiator_misID
         ]]
 end
+
+
+
+
