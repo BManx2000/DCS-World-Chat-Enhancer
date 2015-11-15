@@ -80,10 +80,6 @@ base.print("----function createChat------",_("Tbilisi-Lochini"))
     vsScroll    = box.vsScroll
     sAll        = pBtn.sAll
     sAllies     = pBtn.sAllies
-    pQuery      = box.pQuery
-    bAllowSelected = pQuery.bAllowSelected
-    bDenyAll    = pQuery.bDenyAll
-    lbPlayers   = pQuery.lbPlayers
     
 
     tbAll.onChange = onChange_tbAll
