@@ -1,7 +1,7 @@
-Chat Enhancer and Text Enlarger 0.2
-For DCS World 1.5.0.46175
+Chat Enhancer and Text Enlarger 0.3
+For DCS World 1.5.1.47025
 
-Note: This mod modifies files that are likely to be changed in future patches. Do not install this mod on newer versions than 1.5.0.46175 unless you have verified that the relevant files remain unchanged from that version.
+Note: This mod modifies files that are likely to be changed in future patches. Do not install this mod on newer versions than 1.5.1.47025 unless you have verified that the relevant files remain unchanged from that version.
 
 
 Features:

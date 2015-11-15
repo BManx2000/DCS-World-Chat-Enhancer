@@ -42,9 +42,6 @@ cdata =
     player      = _("player_chat","player"),
     chat        = _("Chat"),
     
-    query           = _("Join requests:"),
-    allow_selected  = _("allow selected"),
-    deny_all        = _("deny all"),
 }
 
 local bCreated = false
@@ -69,7 +66,7 @@ local bQueryEnable = true
 -------------------------------------------------------------------------------
 -- 
 function create()
-base.print("----function createChat------")
+base.print("----function createChat------",_("Tbilisi-Lochini"))
     window = DialogLoader.spawnDialogFromFile(base.dialogsDir .. 'mul_chat.dlg', cdata)
 
     box         = window.Box
@@ -89,12 +86,11 @@ base.print("----function createChat------")
     lbPlayers   = pQuery.lbPlayers
     
 
+    tbAll.onChange = onChange_tbAll
     btnMail.onChange = onChange_btnMail
     vsScroll.onChange = onChange_vsScroll
     eMessage.onChange = onChange_eMessage    
-    tbAll.onChange = onChange_tbAll
-    bAllowSelected.onChange = onChange_bAllowSelected
-    bDenyAll.onChange = onChange_bDenyAll
+
     
     pMsg:addMouseWheelCallback(onMouseWheel_eMessage)
     
@@ -118,11 +114,6 @@ base.print("----function createChat------")
     
     skinMail = btnMail:getSkin()
     skinMailAndQuery = pNoVisible.btnMailAndQuery:getSkin()
-    
-    for k=0,9 do
-        local newItem = ListBoxItem.new("Chizh")
-        lbPlayers:insertItem(newItem)
-    end
     
     eMx,eMy,eMw = eMessage:getBounds()
 
@@ -271,23 +262,13 @@ end
 
     
 function resize(w, h)
-    window:setBounds(chatPos.x, chatPos.y, 480, 607+195)
+    window:setBounds(chatPos.x, chatPos.y, 480, 607)
     
     btnMail:setBounds(12, 0, 32, 73)
-    box:setBounds(0, 0, 480, 533+195)
-    
-    pQuery:setBounds(0, 467, 360, 195)
+    box:setBounds(0, 0, 480, 533)
 end
 
-function onChange_bAllowSelected()
-    
- 
-end
 
-function onChange_bDenyAll()
-    
-  
-end
 
 --[[
     желтый - мои сообщения
@@ -344,15 +325,13 @@ function resizeEditMessage()
     pBtn:setBounds(x,eMy+newH+20,w,h)
     
     local x,y,w,h = box:getBounds()
-    box:setBounds(x,0,w,eMy+newH+423+195)
-    pQuery:setBounds(0, eMy+newH+423, 360, 195)
+    box:setBounds(x,0,w,eMy+newH+423)
     
     local x,y,w,h = pDown:getBounds()
     pDown:setBounds(x,y,w,eMy+newH+117)
     
     local x,y,w,h = window:getBounds()
-   -- window:setBounds(x,y,w,eMy+newH+317+55)
-   window:setSize(w,eMy+newH+496+195)
+    window:setSize(w,eMy+newH+496)
 end
 
 function onChange_eMessage(self)
@@ -449,7 +428,6 @@ function show(b)
         saveChatPos()
     end
     
-    onChange_tbAll()
     window:setVisible(b)
 end
 
@@ -551,8 +529,7 @@ function setMode(a_mode)
         window:setHasCursor(false)
         window:setVisible(true)
         --window:setBounds(0, h/2-200, 360, 455)
-        window:setSize(480, 607+195)
-        pQuery:setBounds(0, 467, 360, 195)
+        window:setSize(480, 607)
     end
     
     if modeCur == "write" then
@@ -573,8 +550,7 @@ function setMode(a_mode)
         window:setVisible(true)
         eMessage:setFocused(true)
         --window:setBounds(0, h/2-200, 360, 455)
-        window:setSize(480, 607+195)
-        pQuery:setBounds(0, 467, 360, 195)
+        window:setSize(480, 607)
     end    
     updateListM()
 end
@@ -683,3 +659,7 @@ function onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7)
         "player_kill", playerID, event_.initiator_misID
         ]]
 end
+
+
+
+
