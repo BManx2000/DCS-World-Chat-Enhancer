@@ -94,8 +94,11 @@ local PlayersPool       = require('mul_playersPool')
 local net               = require('net')
 local MsgWindow			        = require('MsgWindow')
 local RPC = require('RPC')
+local query 				= require('mul_query')
+local wait_query        = require('mul_wait_query')
 
 setmetatable(dxgui, {__index = dxguiWin})
+
 
 Gui.SetupApplicationUpdateCallback()
 Gui.AddFontSearchPathes({'dxgui/skins/fonts/', tostring(os.getenv('windir')) .. '/Fonts/'})
@@ -130,6 +133,46 @@ function RPC.method.onPrtScn(sender_id, ...)
     net.send_chat_to(name .." ".. _("took a screenshot"), net.CHAT_ALL, 0)
 end
 
+--запрос на слот
+function RPC.method.slotWanted(server_id, player_id, slot_id)
+print("------- RPC.method.slotWanted------",server_id, player_id, slot_id)
+    query.slotWanted(server_id, player_id, slot_id)
+end
+
+function RPC.method.slotGiven(playerMaster_id, player_id, side, slot_id)
+    print("------- RPC.method.slotGiven------",playerMaster_id, player_id, side, slot_id)
+    if Select_role.isEnablePlayerTryChangeSlot(player_id,playerMaster_id) then
+        print("-------force_player_slot---",player_id, side, slot_id)
+        net.force_player_slot(player_id, side, slot_id)
+    end
+end
+
+
+function RPC.method.slotDenial(playerMaster_id, player_id)
+    print("------- RPC.method.slotDenial------",playerMaster_id, player_id)
+    Select_role.slotDenial(player_id)
+end
+
+function RPC.method.slotDenialToPlayer()
+    print("------- RPC.method.slotDenialToPlayer------")    
+    wait_query.slotDenialToPlayer()
+end
+
+function RPC.method.releaseSeat(player_id)
+    print("------- RPC.method.releaseSeat------", player_id)    
+    Select_role.releaseSeat(player_id)
+end
+
+function RPC.method.releaseSeatToMaster(playerMaster_id, player_id)
+    print("------- RPC.method.releaseSeatToMaster------", playerMaster_id, player_id)  
+    query.releaseSeatToMaster(player_id) 
+end
+
+function onPlayerTryChangeSlot(player_id, side, slot_id)
+    print("---onPlayerTryChangeSlot-----",player_id, side, slot_id)
+    return Select_role.onPlayerTryChangeSlot(player_id, side, slot_id)
+end
+
 function onSimulationStart()
     print("------- onSimulationStart------",DCS.getPause(),DCS.isMultiplayer(),DCS.isTrackPlaying())
     
@@ -146,7 +189,9 @@ function onSimulationStart()
             gameMessages.hidePause()
         end        
         Chat.updateSlots()  
-    
+        query.onChange_bDenyAll()
+        RPC.sendEvent(net.get_server_id(), "releaseSeat", net.get_my_player_id())
+        
         return
     end
 	
@@ -363,13 +408,17 @@ end
 function onPlayerConnect(id, name)
   --  print("---onPlayerConnect--",id, name)
     Select_role.onPlayerConnect(id)
-    PlayersPool.onPlayerConnect(id)
+    PlayersPool.onPlayerConnect(id)    
 end
 
 function onPlayerDisconnect(id)
     print("----onPlayerDisconnect---", id)
+    
+    query.onChange_bDenyAll()
+    RPC.sendEvent(net.get_server_id(), "releaseSeat", id)
+        
     Select_role.onPlayerDisconnect(id)
-    PlayersPool.onPlayerDisconnect(id)
+    PlayersPool.onPlayerDisconnect(id)     
 end
 
 function onPlayerStart(id)
@@ -384,6 +433,7 @@ function onPlayerChangeSlot(id)
     print("----onPlayerChangeSlot---", id)
     Select_role.onPlayerChangeSlot(id)
     PlayersPool.onPlayerChangeSlot(id)
+    wait_query.onPlayerChangeSlot(id)
 end
 
 -- Данная функция будет вызываться на каждом кадре отрисовки GUI.
