@@ -56,7 +56,7 @@ local modeCur = mode.min
 local noReadMsg = 0
 local curValueWheel = 0
 local newMsg = false
-local bHideBtnMail = false
+local bHideWin = false
 local slotByUnitId = {}
 local chatPos = {} 
 local listStatics = {}
@@ -428,7 +428,7 @@ function show(b)
         saveChatPos()
     end
     
-    window:setVisible(b)
+    setVisible(b)
 end
 
 function updateListM()
@@ -466,24 +466,32 @@ function getAll()
     return tbAll:getState()
 end
 
-function setHideMail(b)
-    bHideBtnMail = b
-    setMode(modeCur)
+function onChatShowHide()
+    bHideWin = not bHideWin 
+    if bHideWin == false then    
+        setMode(modeCur)
+    else
+        window:setVisible(false)
+    end
 end
 
 function setVisibleBtnMail(b)
-    if bHideBtnMail == true then
-        btnMail:setVisible(false)
+    btnMail:setVisible(b)  
+end
+
+function setVisible(b)
+    if bHideWin == false then
+        window:setVisible(b)
     else
-        btnMail:setVisible(b)
-    end    
+        window:setVisible(false)
+    end
 end
 
 function setMode(a_mode)
 
     modeCur = a_mode 
     
-    if window == nil then
+    if window == nil or bHideWin == true then
         return
     end
     if modeCur == "min" then
@@ -498,9 +506,9 @@ function setMode(a_mode)
         window:removeHotKeyCallback('Shift+Tab', onShiftTab)
         window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:removeHotKeyCallback('Tab', onTab) 
-        window:setVisible(false)        
+        setVisible(false)        
         window:setHasCursor(false)
-        window:setVisible(true)
+        setVisible(true)
         --window:setBounds(0, h/2-200, 36, 55)        
         window:setSize(36, 85)
         btnMail:setBounds(12, 0, 24, 55)
@@ -525,9 +533,9 @@ function setMode(a_mode)
         window:removeHotKeyCallback('Shift+Tab', onShiftTab)
         window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:removeHotKeyCallback('Tab', onTab)
-        window:setVisible(false)
+        setVisible(false)
         window:setHasCursor(false)
-        window:setVisible(true)
+        setVisible(true)
         --window:setBounds(0, h/2-200, 360, 455)
         window:setSize(360, 455)
     end
@@ -545,9 +553,9 @@ function setMode(a_mode)
         window:addHotKeyCallback('Shift+Tab', onShiftTab)
         window:addHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:addHotKeyCallback('Tab', onTab)
-        window:setVisible(false)
+        setVisible(false)
         window:setHasCursor(true)
-        window:setVisible(true)
+        setVisible(true)
         eMessage:setFocused(true)
         --window:setBounds(0, h/2-200, 360, 455)
         window:setSize(360, 455)

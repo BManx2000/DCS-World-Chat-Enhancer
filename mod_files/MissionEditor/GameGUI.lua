@@ -173,6 +173,13 @@ function onPlayerTryChangeSlot(player_id, side, slot_id)
     return Select_role.onPlayerTryChangeSlot(player_id, side, slot_id)
 end
 
+function onChatShowHide()
+    print("---onChatShowHide-----",DCS.isMultiplayer())
+    if (DCS.isMultiplayer() == true) then
+        Chat.onChatShowHide()
+    end
+end
+
 function onSimulationStart()
     print("------- onSimulationStart------",DCS.getPause(),DCS.isMultiplayer(),DCS.isTrackPlaying())
     
@@ -319,16 +326,6 @@ print("----onShowChatRead()----",DCS.isMultiplayer())
     else
         Chat.show(false)
     end    
-end
-
-function onShowChatPanel()
-    print("----onShowChatPanel()----")
-    Chat.setHideMail(false)
-end
-
-function onHideChatPanel()
-    print("----onHideChatPanel()----")
-    Chat.setHideMail(true)
 end
 
 function onSimulationPause()
