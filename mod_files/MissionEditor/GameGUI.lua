@@ -75,7 +75,7 @@ onPlayerDisconnect(id)
 onPlayerStart(id)
 onPlayerConnect(id, name)
 
-onShowRadioMenu(size) --вызывается при изменении размеров радио меню
+onShowRadioMenu(size) --РІС‹Р·С‹РІР°РµС‚СЃСЏ РїСЂРё РёР·РјРµРЅРµРЅРёРё СЂР°Р·РјРµСЂРѕРІ СЂР°РґРёРѕ РјРµРЅСЋ
 ]]
 
 package.path = '.\\Scripts\\?.lua;'.. '.\\Scripts\\UI\\?.lua;'
@@ -94,8 +94,13 @@ local PlayersPool       = require('mul_playersPool')
 local net               = require('net')
 local MsgWindow			        = require('MsgWindow')
 local RPC = require('RPC')
+local i18n 				= require('i18n')
 local query 				= require('mul_query')
 local wait_query        = require('mul_wait_query')
+
+controlRequest = require('mul_controlRequest')
+
+local _ = i18n.ptranslate
 
 setmetatable(dxgui, {__index = dxguiWin})
 
@@ -103,7 +108,7 @@ setmetatable(dxgui, {__index = dxguiWin})
 Gui.SetupApplicationUpdateCallback()
 Gui.AddFontSearchPathes({'dxgui/skins/fonts/', tostring(os.getenv('windir')) .. '/Fonts/'})
 
--- Данная функция будет вызываться на каждом кадре отрисовки GUI.
+-- Р”Р°РЅРЅР°СЏ С„СѓРЅРєС†РёСЏ Р±СѓРґРµС‚ РІС‹Р·С‹РІР°С‚СЊСЃСЏ РЅР° РєР°Р¶РґРѕРј РєР°РґСЂРµ РѕС‚СЂРёСЃРѕРІРєРё GUI.
 Gui.SetUpdateCallback(UpdateManager.update)
 
 countCoalitions = 0
@@ -133,7 +138,7 @@ function RPC.method.onPrtScn(sender_id, ...)
     net.send_chat_to(name .." ".. _("took a screenshot"), net.CHAT_ALL, 0)
 end
 
---запрос на слот
+--Р·Р°РїСЂРѕСЃ РЅР° СЃР»РѕС‚
 function RPC.method.slotWanted(server_id, player_id, slot_id)
 print("------- RPC.method.slotWanted------",server_id, player_id, slot_id)
     query.slotWanted(server_id, player_id, slot_id)
@@ -182,9 +187,9 @@ end
 
 function onSimulationStart()
     print("------- onSimulationStart------",DCS.getPause(),DCS.isMultiplayer(),DCS.isTrackPlaying())
-    
+
     gameMessages.show()
-    if (DCS.isMultiplayer() == true) then
+    if (DCS.isMultiplayer() == true) then        
         Select_role.onSimulationStart() 
         if not _OLD_NET_GUI and DCS.isTrackPlaying() == false then
             Select_role.show(true)
@@ -344,7 +349,6 @@ print("----onNetDisconnect---",reason)
     Chat.show(false)
     PlayersPool.show(false)
     Select_role.show(false)
- --   MsgWindow.warning(reason, _("Disconnect"), _("ok")):show()
     onShowMainInterface()
 end 
 
@@ -438,12 +442,12 @@ function onPlayerChangeSlot(id)
     wait_query.onPlayerChangeSlot(id)
 end
 
--- Данная функция будет вызываться на каждом кадре отрисовки GUI.
+-- Р”Р°РЅРЅР°СЏ С„СѓРЅРєС†РёСЏ Р±СѓРґРµС‚ РІС‹Р·С‹РІР°С‚СЊСЃСЏ РЅР° РєР°Р¶РґРѕРј РєР°РґСЂРµ РѕС‚СЂРёСЃРѕРІРєРё GUI.
 Gui.SetUpdateCallback(UpdateManager.update)
 
 --------------------------------------------------------------------------------------------------------
 
--- отладочная функция для сериализации таблицы на экран
+-- РѕС‚Р»Р°РґРѕС‡РЅР°СЏ С„СѓРЅРєС†РёСЏ РґР»СЏ СЃРµСЂРёР°Р»РёР·Р°С†РёРё С‚Р°Р±Р»РёС†С‹ РЅР° СЌРєСЂР°РЅ
 function traverseTable(_t, _numLevels, _tabString, filename, filter)
     local _tablesList = {}
     filter = filter or {}
@@ -529,8 +533,103 @@ end
 
 --------------------------------------------------------------------------------------------------------
 -- load a user-provided script
+local userCallbackList = {
+    'onMissionLoadBegin',
+    'onMissionLoadProgress',
+    'onMissionLoadEnd',
+    'onSimulationStart',
+    'onSimulationStop',
+    'onSimulationFrame',
+    'onSimulationPause',
+    'onSimulationResume',
+    'onGameEvent',
+    'onNetConnect',
+    'onNetMissionChanged',
+    'onNetDisconnect',
+    'onPlayerConnect',
+    'onPlayerDisconnect',
+    'onPlayerStart',
+    'onPlayerStop',
+    'onPlayerChangeSlot',
+    'onPlayerTryConnect',
+    'onPlayerTrySendChat',
+    'onPlayerTryChangeSlot',
+    'onChatMessage',
+    'onShowRadioMenu',
+    'onShowPool',
+    'onShowGameMenu',
+    'onShowBriefing',
+    'onShowChatAll',
+    'onShowChatTeam',
+    'onShowChatRead',
+    'onShowMessage',
+    'onTriggerMessage',
+    'onRadioMessage',
+    'onRadioCommand',
+}
 
-local userScript = lfs.writedir() .. 'Scripts/userGameGUI.lua'
-if lfs.attributes(userScript, 'mode') == 'file' then
-    dofile(userScript)
+local function list2map(cbList)
+    local map = {}
+	for i,v in ipairs(cbList) do
+	    map[v] = true
+	end
+	return map
 end
+
+local userCallbackMap = list2map(userCallbackList)
+
+local function isValidCallback(name, cb)
+    return userCallbackMap[name]==true and type(cb) == 'function'
+end
+
+local function _hook(callbackName, newHandler)
+    local prevHandler = _G[callbackName]
+    if prevHandler then
+        _G[callbackName] = function(...)
+            local res = newHandler(...)
+            if res ~= nil then return res end
+            return prevHandler(...)
+        end
+    else
+        _G[callbackName] = newHandler
+    end
+end
+
+function DCS.setUserCallbacks(cb_table)
+    for name,func in pairs(cb_table) do
+		if isValidCallback(name, func) then
+            _hook(name, func)
+            print('    Hooked ' .. name)
+		else
+            print('    Rejected ' .. name)
+		end
+    end
+end
+
+local function loadUserScripts(userScriptDir)
+    local userScripts = {}
+    for fn in lfs.dir(userScriptDir) do
+        if string.find(fn, '.*GameGUI%.lua') then
+            table.insert(userScripts, fn)
+        end
+    end
+    table.sort(userScripts)
+    -- actually load the stuff
+    for i,fn in ipairs(userScripts) do
+        local env = {}
+        setmetatable(env, { __index = _G })
+        local u, err = loadfile(userScriptDir .. '/' .. fn)
+        if u then
+            setfenv(u, env)
+            ok, err = pcall(u)
+            if ok then
+                print('Loaded user script '..fn)
+            else
+                print('Failed to exec user script '..fn..': '..err)
+            end
+        else
+            print('Failed to load user script '..fn..': '..err)
+        end
+    end
+end
+loadUserScripts(lfs.writedir() .. 'Scripts')
