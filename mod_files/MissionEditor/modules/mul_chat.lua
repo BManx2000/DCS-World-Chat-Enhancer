@@ -29,6 +29,7 @@ local Tools 			= require('tools')
 local lfs 				= require('lfs')
 local Skin				= require('Skin')
 local ListBoxItem       = require('ListBoxItem')
+local DB                = require('me_db_api')
 
 i18n.setup(_M)
 
@@ -56,7 +57,7 @@ local modeCur = mode.min
 local noReadMsg = 0
 local curValueWheel = 0
 local newMsg = false
-local bHideBtnMail = false
+local bHideWin = false
 local slotByUnitId = {}
 local chatPos = {} 
 local listStatics = {}
@@ -80,7 +81,6 @@ base.print("----function createChat------",_("Tbilisi-Lochini"))
     vsScroll    = box.vsScroll
     sAll        = pBtn.sAll
     sAllies     = pBtn.sAllies
-    
 
     tbAll.onChange = onChange_tbAll
     btnMail.onChange = onChange_btnMail
@@ -408,10 +408,25 @@ function addMessage(a_message, a_name, a_skin)
     
     if modeCur == "min" then
         noReadMsg = noReadMsg + 1
-        btnMail:setText(noReadMsg)
+        updateNoReadMsg()
     else
         updateListM()
     end
+end
+
+function updateNoReadMsg()
+    local txt 
+    if noReadMsg >= 100 then
+        txt = "99+"    
+    else
+        txt = base.tostring(noReadMsg)
+    end
+    
+    if modeCur == "min" and noReadMsg > 0 then
+        setVisibleBtnMail(true)
+    end
+    
+    btnMail:setText(txt)
 end
 
 function show(b)
@@ -424,7 +439,7 @@ function show(b)
         saveChatPos()
     end
     
-    window:setVisible(b)
+    setVisible(b)
 end
 
 function updateListM()
@@ -462,30 +477,42 @@ function getAll()
     return tbAll:getState()
 end
 
-function setHideMail(b)
-    bHideBtnMail = b
-    setMode(modeCur)
+function onChatShowHide()
+    bHideWin = not bHideWin 
+    if bHideWin == false then    
+        setMode(modeCur)
+    else
+        window:setVisible(false)
+    end
 end
 
 function setVisibleBtnMail(b)
-    if bHideBtnMail == true then
-        btnMail:setVisible(false)
+    if noReadMsg == 0 then
+        btnMail:setVisible(false)  
     else
-        btnMail:setVisible(b)
-    end    
+        btnMail:setVisible(b)  
+    end
+end
+
+function setVisible(b)
+    if bHideWin == false then
+        window:setVisible(b)
+    else
+        window:setVisible(false)
+    end
 end
 
 function setMode(a_mode)
 
     modeCur = a_mode 
     
-    if window == nil then
+    if window == nil or bHideWin == true then
         return
     end
     if modeCur == "min" then
         box:setVisible(false)
         setVisibleBtnMail(true)
-        btnMail:setText(noReadMsg)
+        updateNoReadMsg()
         box:setSkin(skinModeRead)
         eMessage:setFocused(false)
         DCS.banKeyboard(false)
@@ -494,9 +521,9 @@ function setMode(a_mode)
         window:removeHotKeyCallback('Shift+Tab', onShiftTab)
         window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:removeHotKeyCallback('Tab', onTab) 
-        window:setVisible(false)        
+        setVisible(false)        
         window:setHasCursor(false)
-        window:setVisible(true)
+        setVisible(true)
         --window:setBounds(0, h/2-200, 36, 55)        
         window:setSize(48, 113)
         btnMail:setBounds(12, 0, 32, 73)
@@ -521,9 +548,9 @@ function setMode(a_mode)
         window:removeHotKeyCallback('Shift+Tab', onShiftTab)
         window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:removeHotKeyCallback('Tab', onTab)
-        window:setVisible(false)
+        setVisible(false)
         window:setHasCursor(false)
-        window:setVisible(true)
+        setVisible(true)
         --window:setBounds(0, h/2-200, 360, 455)
         window:setSize(480, 607)
     end
@@ -541,9 +568,9 @@ function setMode(a_mode)
         window:addHotKeyCallback('Shift+Tab', onShiftTab)
         window:addHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:addHotKeyCallback('Tab', onTab)
-        window:setVisible(false)
+        setVisible(false)
         window:setHasCursor(true)
-        window:setVisible(true)
+        setVisible(true)
         eMessage:setFocused(true)
         --window:setBounds(0, h/2-200, 360, 455)
         window:setSize(480, 607)
@@ -597,30 +624,45 @@ local function getPlayerName2(a_id)
     return cdata.unknown
 end
 
+local function getDisplayName(a_type)
+    if DB.isInitialized() == false then 
+        return a_type
+    end
+
+    local unitTypeDesc = DB.unit_by_type[a_type]
+    
+    if unitTypeDesc and unitTypeDesc.DisplayName then
+        return unitTypeDesc.DisplayName
+    end
+    return a_type
+end
+
 function onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7) 
     if eventName == "crash" then
         local unitType = slotByUnitId[arg2].type
-        onChatMessage(base.string.format("%s ".._("on").." %s ".._("crashed"),getPlayerInfo(arg1),unitType))
+        onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("crashed"),getPlayerInfo(arg1),getDisplayName(unitType)))
     elseif eventName == "eject" then
         local unitType = slotByUnitId[arg2].type
-        onChatMessage(base.string.format("%s ".._("on").." %s ".._("ejected"),getPlayerInfo(arg1),unitType))
+        onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("ejected"),getPlayerInfo(arg1),getDisplayName(unitType)))
     elseif eventName == "takeoff" then
         local unitType = slotByUnitId[arg2].type
-        onChatMessage(base.string.format("%s ".._("on").." %s ".._("took off from").." %s",getPlayerInfo(arg1),unitType,arg3))
+        onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("took off from").." %s",getPlayerInfo(arg1),getDisplayName(unitType),_(arg3)))
     elseif eventName == "landing" then
         local unitType = slotByUnitId[arg2].type
-        onChatMessage(base.string.format("%s ".._("on").." %s ".._("landed at").." %s",getPlayerInfo(arg1),unitType,arg3))
+        onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("landed at").." %s",getPlayerInfo(arg1),getDisplayName(unitType),_(arg3)))
     elseif eventName == "mission_end" then
         onChatMessage(base.string.format(_("Mission is over.")))
         if DCS.isServer() == true then
             net.load_next_mission() 
         end            
     elseif eventName == "kill" then   --onGameEvent(kill,idPlayer1,typeP1,coalition1, idP2,typeP2, coalition2, weapon)
-        local player = parseSide(arg3).." "..getPlayerName2(arg1).." ".._("on").." "..arg2
-        local killer = parseSide(arg6).." "..getPlayerName2(arg4).." ".._("on").." "..arg5
+        local player = parseSide(arg3).." "..getPlayerName2(arg1).." ".._("in_chat", "in").." "..arg2
+        local killer = parseSide(arg6).." "..getPlayerName2(arg4).." ".._("in_chat", "in").." "..arg5
         onChatMessage(player.." ".._("killed").." "..killer.." ".._("with").." "..arg7)
     elseif eventName == "self_kill" then 
         onChatMessage(base.string.format("%s ".._("killed himself"),getPlayerInfo(arg1)))
+    elseif eventName == "pilot_death" then 
+        onChatMessage(base.string.format("%s ".._("death"),getPlayerInfo(arg1)))
     elseif eventName == "change_slot" then 
         if arg2 ~= nil and slotByUnitId[arg2] ~= nil then
             local unitType = slotByUnitId[arg2].type
@@ -630,13 +672,13 @@ function onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 				sideAccupied = parseSide(player_info.side)
 			end
 			local player = parseSide(arg3).." "..getPlayerName2(arg1)
-            onChatMessage(base.string.format("%s ".._("occupied ").." %s %s",player,sideAccupied, unitType))			
+            onChatMessage(base.string.format("%s ".._("occupied").." %s %s",player,sideAccupied, getDisplayName(unitType)))			
         else
 			local player = parseSide(arg3).." "..getPlayerName2(arg1)
             onChatMessage(base.string.format("%s ".._("returned to Spectators"),player))
         end
     elseif eventName == "connect" then 
-        onChatMessage(base.string.format("%s ".._("connected to the server"),getPlayerName(arg1)))        
+        onChatMessage(base.string.format("%s ".._("connected to server"),getPlayerName(arg1)))        
     elseif eventName == "disconnect" then
 		local player = parseSide(arg3).." "..cdata.player.." "..arg2
         onChatMessage(base.string.format("%s ".._("disconnected"), player))
