@@ -97,6 +97,7 @@ local RPC = require('RPC')
 local i18n 				= require('i18n')
 local query 				= require('mul_query')
 local wait_query        = require('mul_wait_query')
+local MeSettings				= require('MeSettings')
 
 controlRequest = require('mul_controlRequest')
 
@@ -330,7 +331,9 @@ end
 
 function onSimulationPause()
     print("----onSimulationPause---")
-    gameMessages.showPause()
+    if DCS.isTrackPlaying() == false then
+        gameMessages.showPause()
+    end    
 end
 
 function onSimulationStop()
@@ -402,7 +405,7 @@ function onRadioCommand(command_message)
 end
 
 function onChatMessage(message, from)
-    Chat.onChatMessage(message, from)
+    Chat.onChatMessage(message, from)  
 end
 
 --- player list callbacks
@@ -576,6 +579,10 @@ local userCallbackMap = list2map(userCallbackList)
 local function isValidCallback(name, cb)
     return userCallbackMap[name]==true and type(cb) == 'function'
 end
+
+function getPermissionToCollectStatistics()
+    return MeSettings.getPermissionToCollectStatistics()
+end 
 
 local function _hook(callbackName, newHandler)
     local prevHandler = _G[callbackName]
