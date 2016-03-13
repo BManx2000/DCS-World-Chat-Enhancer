@@ -29,7 +29,7 @@ local Tools 			= require('tools')
 local lfs 				= require('lfs')
 local Skin				= require('Skin')
 local ListBoxItem       = require('ListBoxItem')
-local DB                = require('me_db_api')
+local keys              = require('mul_keys')
 
 i18n.setup(_M)
 
@@ -68,7 +68,6 @@ local bQueryEnable = true
 -------------------------------------------------------------------------------
 -- 
 function create()
-base.print("----function createChat------",_("Tbilisi-Lochini"))
     window = DialogLoader.spawnDialogFromFile(base.dialogsDir .. 'mul_chat.dlg', cdata)
 	window:setUpdateFunction(update)
     box         = window.Box
@@ -128,14 +127,17 @@ base.print("----function createChat------",_("Tbilisi-Lochini"))
     for i = 1, 20 do
         local staticNew = EditBox.new()        
         table.insert(listStatics, staticNew)
+        staticNew:setReadOnly(true)   
+        staticNew:setTextWrapping(true)  
+        staticNew:setMultiline(true) 
         pMsg:insertWidget(staticNew)
     end
     
     function eMessage:onKeyDown(key, unicode) 
         if 'return' == key then            
-            local text = eMessage:getText()
+            local text = eMessage:getText()            
             if text ~= "\n" and text ~= nil then
-                base.print("---tbAll:getState()---",tbAll:getState())
+                text = string.sub(text, 1, (string.find(text, '%s+$') or 0) - 1)
                 net.send_chat(text, tbAll:getState()) 
                 --onChatMessage(text, net.get_my_player_id())
             end
@@ -454,10 +456,7 @@ function updateListM()
     if listMessages[curMsg] then          
         while curMsg > 0 and heightChat > (offset + listMessages[curMsg].height) do
             local msg = listMessages[curMsg]
-            listStatics[curStatic]:setSkin(msg.skin)     
-            listStatics[curStatic]:setReadOnly(true)   
-            listStatics[curStatic]:setTextWrapping(true)  
-            listStatics[curStatic]:setMultiline(true)              
+            listStatics[curStatic]:setSkin(msg.skin)                                 
             listStatics[curStatic]:setBounds(0,heightChat-offset-msg.height,widthChat,msg.height) 
             listStatics[curStatic]:setText(msg.message)            
             offset = offset + msg.height
@@ -604,32 +603,19 @@ local function getPlayerName2(a_id)
     return cdata.unknown
 end
 
-local function getDisplayName(a_type)
-    if DB.isInitialized() == false then 
-        return a_type
-    end
-
-    local unitTypeDesc = DB.unit_by_type[a_type]
-    
-    if unitTypeDesc and unitTypeDesc.DisplayName then
-        return unitTypeDesc.DisplayName
-    end
-    return a_type
-end
-
 function onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7) 
     if eventName == "crash" then
         local unitType = slotByUnitId[arg2].type
-        onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("crashed"),getPlayerInfo(arg1),getDisplayName(unitType)))
+        onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("crashed"),getPlayerInfo(arg1),keys.getDisplayName(unitType)))
     elseif eventName == "eject" then
         local unitType = slotByUnitId[arg2].type
-        onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("ejected"),getPlayerInfo(arg1),getDisplayName(unitType)))
+        onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("ejected"),getPlayerInfo(arg1),keys.getDisplayName(unitType)))
     elseif eventName == "takeoff" then
         local unitType = slotByUnitId[arg2].type
-        onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("took off from").." %s",getPlayerInfo(arg1),getDisplayName(unitType),_(arg3)))
+        onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("took off from").." %s",getPlayerInfo(arg1),keys.getDisplayName(unitType),_(arg3)))
     elseif eventName == "landing" then
         local unitType = slotByUnitId[arg2].type
-        onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("landed at").." %s",getPlayerInfo(arg1),getDisplayName(unitType),_(arg3)))
+        onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("landed at").." %s",getPlayerInfo(arg1),keys.getDisplayName(unitType),_(arg3)))
     elseif eventName == "mission_end" then
         onChatMessage(base.string.format(_("Mission is over.")))
         if DCS.isServer() == true then
@@ -652,7 +638,7 @@ function onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 				sideAccupied = parseSide(player_info.side)
 			end
 			local player = parseSide(arg3).." "..getPlayerName2(arg1)
-            onChatMessage(base.string.format("%s ".._("occupied").." %s %s",player,sideAccupied, getDisplayName(unitType)))			
+            onChatMessage(base.string.format("%s ".._("occupied").." %s %s",player,sideAccupied, keys.getDisplayName(unitType)))			
         else
 			local player = parseSide(arg3).." "..getPlayerName2(arg1)
             onChatMessage(base.string.format("%s ".._("returned to Spectators"),player))
