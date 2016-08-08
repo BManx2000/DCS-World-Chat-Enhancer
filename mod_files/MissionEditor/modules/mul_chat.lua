@@ -399,11 +399,18 @@ function addMessage(a_message, a_name, a_skin)
     local msg = {message = fullMessage, skin = a_skin, height = newH}
     table.insert(listMessages, msg)
         
-    vsScroll:setRange(1,#listMessages)
-    vsScroll:setThumbValue(1)
-  
-    vsScroll:setValue(#listMessages)
-    curValueWheel = #listMessages
+    local minR, maxR = vsScroll:getRange()
+    
+    if ((curValueWheel+1) >= maxR) then
+        vsScroll:setRange(1,#listMessages)
+        vsScroll:setThumbValue(1)
+        vsScroll:setValue(#listMessages)
+        curValueWheel = #listMessages
+    else
+    
+        vsScroll:setRange(1,#listMessages)
+        vsScroll:setThumbValue(1)
+    end   
     
     if modeCur == "min" then
 		updateListM()
@@ -603,6 +610,32 @@ local function getPlayerName2(a_id)
     return cdata.unknown
 end
 
+function getMsgByCode(code)
+    local msg = _("Unknown")
+    if code == net.ERR_INVALID_ADDRESS then
+        msg = _("Invalid address")
+    elseif code == net.ERR_CONNECT_FAILED then
+        msg = _("Connection failed")
+    elseif code == net.ERR_WRONG_VERSION then
+        msg = _("Wrong DCS version")
+    elseif code == net.ERR_PROTOCOL_ERROR then
+        msg = _("Protocol error")
+    elseif code == net.ERR_TAINTED_CLIENT then
+        msg = _("Pure client is required")
+    elseif code == net.ERR_INVALID_PASSWORD then
+        msg = _("Invalid password")
+    elseif code == net.ERR_BANNED then
+        msg = _("Banned")
+    elseif code == net.ERR_BAD_CALLSIGN then
+        msg = _("Bad callsign")
+    elseif code == net.ERR_TIMEOUT then
+        msg = _("Connection timed out.")
+    elseif code == net.ERR_KICKED then
+        msg = _("Kicked")
+    end 
+    return msg
+end
+    
 function onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7) 
     if eventName == "crash" then
         local unitType = slotByUnitId[arg2].type
@@ -647,11 +680,17 @@ function onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7)
         onChatMessage(base.string.format("%s ".._("connected to server"),getPlayerName(arg1)))        
     elseif eventName == "disconnect" then
 		local player = parseSide(arg3).." "..cdata.player.." "..arg2
-        onChatMessage(base.string.format("%s ".._("disconnected"), player))
+        local msg = "" 
+        if arg4 ~= net.ERR_THATS_OKAY then
+            msg = _("Reason")..":"..getMsgByCode(arg4)
+        end
+        onChatMessage(base.string.format("%s ".._("disconnected").." %s", player, msg))
     elseif eventName == "friendly_fire" then 
         onChatMessage(base.string.format("%s ".._("hit allied").." %s ".._("with").." %s",getPlayerInfo(arg1),getPlayerName2(arg3), arg2))
+    elseif eventName == "screenshot" then 
+        onChatMessage(base.string.format("%s ".._("took a screenshot"),getPlayerInfo(arg1)))
     else
-        onChatMessage(base.string.format("unknown %s %s %s",eventName, arg1,arg2,arg3))
+        onChatMessage(base.string.format("unknown %s %s %s",eventName, arg1 or "nil", arg2 or "nil" ,arg3  or "nil"))
     end    
     --[[
         "crash", playerID, event.initiator_misID
