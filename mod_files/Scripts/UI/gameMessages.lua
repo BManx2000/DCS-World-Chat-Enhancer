@@ -16,6 +16,7 @@ local assert = base.assert
 local type = base.type
 local math = base.math
 local os = base.os
+local HMD = base.HMD
 
 local Gui               = require('dxgui')
 local GuiWin            = require('dxguiWin')
@@ -53,22 +54,20 @@ function create()
 
 	window = DialogLoader.spawnDialogFromFile('Scripts/UI/gameMessages.dlg', localization)
     main_w, main_h = Gui.GetWindowSize()
-    window:setBounds(0,0, main_w, main_h)
-    
-    staticSkin = window.staticTmp:getSkin()
+    window:setBounds(0,0, main_w, main_h)  
     
     sPause = window.sPause
     
     pLentaTrigger = Lenta.new(window.pLentaTrig)
-   -- pLentaTrigger:setBounds(main_w - (2 * main_w/3)+20,20, main_w/3, main_h/4)
-    pLentaTrigger:setBounds(main_w - (800)-20,20, 800, main_h/2)
-    pLentaTrigger:setSeparator(true)
-
-    pLentaRadio = Lenta.new(window.pLentaRadio)
-    pLentaRadio:setBounds(0,20, main_w*0.8, main_h/2)
+    pLentaRadio = Lenta.new(window.pLentaRadio) 
     
     sMain = window.sMain
     sRadioAuto = window.sRadioAuto
+        
+   -- pLentaTrigger:setBounds(main_w - (2 * main_w/3)+20,20, main_w/3, main_h/4)
+    pLentaTrigger:setBounds(main_w - (800)-20,20, 800, main_h/2)
+    pLentaTrigger:setSeparator(true)
+    pLentaRadio:setBounds(0,20, main_w*0.8, main_h/2)
     
     sPause:setVisible(false)
     onRadioCommand("")
@@ -87,19 +86,27 @@ function show()
 		 create()
 	end
     
-    clear()
+    if HMD.isActive() == true then
+        pLentaTrigger:updateSkins(window.pLentaTrig_High)
+        pLentaRadio:updateSkins(window.pLentaRadio_High)
+      
+        window.sRadioAuto:setVisible(false)
+        sRadioAuto = window.sRadioAuto_High
+        window.sMain:setVisible(false)
+        sMain = window.sMain_High
+    else
+        pLentaTrigger:updateSkins(window.pLentaTrig)
+        pLentaRadio:updateSkins(window.pLentaRadio)
+        
+        window.sMain_High:setVisible(false)
+        sMain = window.sMain
+        window.sRadioAuto_High:setVisible(false)    
+        sRadioAuto = window.sRadioAuto
+    end
+    
+    clear()       
     
     window:setVisible(true)
- --[[
-    addMessage("dfgdf fdg dfGfdgfdgfd dsfg fgfdg g fd gdsgewettgfdgfdgfdg1", 30, {r=1,g=0,b=0}  ) 
-    addMessage("dfgdf fdg dfGfdgfdgfd dsfg fgfdg g fd gdsgewettgfdgfdgfdg2", 30,  {r=0,g=1,b=0}  ) 
-    addMessage("dfgdf fdg dfGfdgfdgfd dsfg fgfdg g fd gdsgewettgfdgfdgfdg3", 30, {r=0,g=0,b=1}  ) 
-    addMessage("dfgdf fdg dfGfdgfdgfd dsfg fgfdg g fd gdsgewettgfdgfdgfdg4", 30, {r=1,g=0,b=0}  ) 
-    addMessage("dfgdf fdg dfGfdgfdgfd dsfg fgfdg g fd gdsgewettgfdgfdgfdg5", 30, {1,1,0}  ) 
-    addMessage("dfgdf fdg dfGfdgfdgfd dsfg fgfdg g fd gdsgewettgfdgfdgfdg6", 30, {1,0,1}  ) 
-    addMessage("dfgdf fdg dfGfdgfdgfd dsfg fgfdg g fd gdsgewettgfdgfdgfdg7", 30, {0,1,0}  ) 
-    addMessage("dfgdf fdg dfGfdgfdgfd dsfg fgfdg g fd gdsgewettgfdgfdgfdg8", 30, {0,0,1}  ) ]]
-
 end
 
 function clear()
@@ -171,8 +178,6 @@ function updateAnimations()
         sPause:setSkin(SkinUtils.setStaticPictureAlpha((1500-timeCur)/1500, sPause:getSkin()))
     end
 end
-
-
 
 function showPause()
     if sPause then
