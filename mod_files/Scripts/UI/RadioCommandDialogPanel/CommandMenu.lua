@@ -22,17 +22,18 @@ local utils = base.require('utils')
 local gettext = base.require("i_18n")
 local _ = gettext.translate
 
-local Gui = base.require("dxgui")
-local Static = base.require("Static")
-local Window = base.require("Window")
-local StaticList = base.require("StaticList")
-local StaticMenu = base.require("StaticMenu")
-local Panel = base.require("Panel")
-local Skin  = base.require('Skin')
-local Size = base.require("Size")
-local Color = base.require("Color")
-local Text = base.require("Text")
-local Bkg = base.require("Bkg")
+local Gui           = base.require("dxgui")
+local Static        = base.require("Static")
+local Window        = base.require("Window")
+local StaticList    = base.require("StaticList")
+local StaticMenu    = base.require("StaticMenu")
+local Panel         = base.require("Panel")
+local Skin          = base.require('Skin')
+local Size          = base.require("Size")
+local Color         = base.require("Color")
+local Text          = base.require("Text")
+local Bkg           = base.require("Bkg")
+local HMD           = base.HMD
 
 ON_OPEN = 0
 ON_CLOSE = -1
@@ -42,6 +43,16 @@ ON_PREVIOUS = 11
 ON_EXIT = 12
 
 menuWidth = 415
+
+local fontSize = 18
+local fontSizeCaption = 22
+local menuCaptionHeight = 30
+
+if HMD.isActive() == true then
+    fontSize = 20
+    fontSizeCaption = 25
+    menuCaptionHeight = 30
+end
 
 function eventCallback(ptr, event, ...)
 	local self = list[ptr]
@@ -75,13 +86,11 @@ function init(self, data, rootItem, parent)
 		self.container = container
 	end
 	
-	local menuCaptionHeight = 20
-	
 	local font = 'DejaVuLGCSansMono.ttf'
 	local textSkin = Skin.staticSkin()
 	textSkin.skinData.params.textWrapping = true
 	textSkin.skinData.states.released[1].text.font = font
-	textSkin.skinData.states.released[1].text.fontSize = 18;
+	textSkin.skinData.states.released[1].text.fontSize = fontSize;
 	textSkin.skinData.states.released[1].text.color = Color.white()
 	textSkin.skinData.states.released[1].text.shadowColor = Color.black()
 	textSkin.skinData.states.released[1].text.shadowOffset = Size.new(1, 1)
@@ -97,7 +106,7 @@ function init(self, data, rootItem, parent)
 			local menuCaption = Static.new('CommandMenu.menuCaption')
 			menuCaption:setSkin(textSkin)
 			local menuCaptionSkin = menuCaption:getSkin()
-			menuCaptionSkin.skinData.states.released[1].text.fontSize = 22;
+			menuCaptionSkin.skinData.states.released[1].text.fontSize = fontSizeCaption;
 			menuCaptionSkin.skinData.states.released[1].text.color = Color.white()
 			menuCaptionSkin.skinData.states.released[1].text.shadowColor = Color.black()
 			menuCaptionSkin.skinData.states.released[1].text.shadowOffset = Size.new(1, 1)
