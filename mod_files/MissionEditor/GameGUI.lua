@@ -134,18 +134,30 @@ print("------- onShowRadioMenu------",a_h)
     gameMessages.setOffsetLentaTrigger(a_h)
 end
 
+
+function RPC.method.onCustomEvent(sender_id, eventName)
+    --print("---RPC.method.onCustomEvent----",sender_id, eventName, arg1,arg2,arg3)
+    Chat.onGameEvent(eventName,sender_id) 
+end
+
 function RPC.method.onPrtScn(sender_id, ...)
-    local name = Chat.getPlayerInfo(sender_id)
-    net.send_chat_to(name .." ".. _("took a screenshot"), net.CHAT_ALL, 0)
+    RPC.method.onCustomEvent(sender_id, "screenshot") -- locally
+    RPC.sendEvent(0, "onCustomEvent", "screenshot", sender_id) -- to everybody else
 end
 
 --запрос на слот
-function RPC.method.slotWanted(server_id, player_id, slot_id)
+function RPC.method.slotWanted(server_id, player_id, slot_id) 
+    if DCS.isTrackPlaying() == true then
+        return
+    end
 print("------- RPC.method.slotWanted------",server_id, player_id, slot_id)
     query.slotWanted(server_id, player_id, slot_id)
 end
 
 function RPC.method.slotGiven(playerMaster_id, player_id, side, slot_id)
+    if DCS.isTrackPlaying() == true then
+        return
+    end
     print("------- RPC.method.slotGiven------",playerMaster_id, player_id, side, slot_id)
     if Select_role.isEnablePlayerTryChangeSlot(player_id,playerMaster_id) then
         print("-------force_player_slot---",player_id, side, slot_id)
@@ -155,21 +167,33 @@ end
 
 
 function RPC.method.slotDenial(playerMaster_id, player_id)
+    if DCS.isTrackPlaying() == true then
+        return
+    end
     print("------- RPC.method.slotDenial------",playerMaster_id, player_id)
     Select_role.slotDenial(player_id)
 end
 
 function RPC.method.slotDenialToPlayer()
+    if DCS.isTrackPlaying() == true then
+        return
+    end
     print("------- RPC.method.slotDenialToPlayer------")    
     wait_query.slotDenialToPlayer()
 end
 
 function RPC.method.releaseSeat(player_id)
+    if DCS.isTrackPlaying() == true then
+        return
+    end
     print("------- RPC.method.releaseSeat------", player_id)    
     Select_role.releaseSeat(player_id)
 end
 
 function RPC.method.releaseSeatToMaster(playerMaster_id, player_id)
+    if DCS.isTrackPlaying() == true then
+        return
+    end
     print("------- RPC.method.releaseSeatToMaster------", playerMaster_id, player_id)  
     query.releaseSeatToMaster(player_id) 
 end
@@ -202,7 +226,9 @@ function onSimulationStart()
             gameMessages.hidePause()
         end        
         Chat.updateSlots()  
+        PlayersPool.updateSlots()  
         query.onChange_bDenyAll()
+        print("----onSimulationStart--releaseSeat---")
         RPC.sendEvent(net.get_server_id(), "releaseSeat", net.get_my_player_id())
         
         return
@@ -253,12 +279,17 @@ end
 
 function onSimulationEsc()
     if (DCS.isMultiplayer() == true) and (DCS.isTrackPlaying() == false) then
-        if Select_role.getVisible() == false then
-            Select_role.show(true)
-			DCS.setViewPause(true)
-        else
+        if Select_role.getVisible() == true then
             Select_role.show(false)
 			DCS.setViewPause(false)
+        else
+            if GameMenu.getVisible() == true then
+                GameMenu.hide()  
+                DCS.setViewPause(false)    
+            else
+                GameMenu.show()
+                DCS.setViewPause(true)
+            end    
         end
 		
         return
@@ -343,16 +374,29 @@ end
 
 function onSimulationStop()
     Chat.show(false)
+    controlRequest.show(false)
     print("----onSimulationStop---")
 end
 
-function onNetDisconnect(reason)
-print("----onNetDisconnect---",reason)
+function onNetDisconnect(reason, code)
+print("----onNetDisconnect---",reason, code)
+    local msg = Chat.getMsgByCode(code)
+
+    if reason then
+        msg = msg.."\n\n"..reason
+    end    
+ 
     net.stop_network()   
     Chat.show(false)
     PlayersPool.show(false)
     Select_role.show(false)
+    query.show(false)
+    wait_query.show(false)
     onShowMainInterface()
+    
+    if code ~= net.ERR_THATS_OKAY then
+        MsgWindow.warning(msg, _("DISCONNECT"), _("OK")):show()
+    end
 end 
 
 function onSimulationResume()
@@ -420,8 +464,8 @@ function onPlayerConnect(id, name)
     PlayersPool.onPlayerConnect(id)    
 end
 
-function onPlayerDisconnect(id)
-    print("----onPlayerDisconnect---", id)
+function onPlayerDisconnect(id, code)
+    print("----onPlayerDisconnect---", id, code)
     
     query.onChange_bDenyAll()
     RPC.sendEvent(net.get_server_id(), "releaseSeat", id)
@@ -444,6 +488,11 @@ function onPlayerChangeSlot(id)
     PlayersPool.onPlayerChangeSlot(id)
     wait_query.onPlayerChangeSlot(id)
 end
+
+function onUpdateScore()
+    PlayersPool.updateGrid()
+end
+
 
 -- Данная функция будет вызываться на каждом кадре отрисовки GUI.
 Gui.SetUpdateCallback(UpdateManager.update)
