@@ -58,6 +58,8 @@ function create()
     
     sPause = window.sPause
     
+    sPause:setPosition(main_w-76,9)
+    
     pLentaTrigger = Lenta.new(window.pLentaTrig)
     pLentaRadio = Lenta.new(window.pLentaRadio) 
     

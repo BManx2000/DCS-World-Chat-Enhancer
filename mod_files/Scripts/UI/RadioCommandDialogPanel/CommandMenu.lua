@@ -61,7 +61,6 @@ function eventCallback(ptr, event, ...)
 end
 
 function new(self, data, rootItem, width, height)
-
 	local newCommandMenu = {}
 	base.setmetatable(newCommandMenu, self)	
 	self.__index = self
@@ -122,7 +121,7 @@ function init(self, data, rootItem, parent)
 				container = containerSkin,
 				item = textSkin
 			}
-			local commandMenu = StaticMenu.new('CommandMenu.commandMenu', 0, menuCaptionHeight, menuWidth, menuHeight, 12, skin)
+			local commandMenu = StaticMenu.new('CommandMenu.commandMenu', 0, menuCaptionHeight, menuWidth, menuHeight, 12, skin, self)
 			menuPanel:insertWidget(commandMenu:getContainer())
 			self.commandMenu = commandMenu
 		end

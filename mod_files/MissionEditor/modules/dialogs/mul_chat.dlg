@@ -31,8 +31,15 @@ dialog = {
 								["password"] = {
 									[1] = false,
 								},
+								["pictureFile"] = {
+								},
 								["readOnly"] = {
 									[1] = false,
+								},
+								["skinName"] = {
+								},
+								["tabOrder"] = {
+									[1] = 0,
 								},
 								["text"] = {
 									[1] = "",
@@ -132,6 +139,10 @@ dialog = {
 										["enabled"] = {
 											[1] = true,
 										},
+										["pictureFile"] = {
+										},
+										["skinName"] = {
+										},
 										["text"] = {
 											[1] = "$ALL",
 										},
@@ -182,6 +193,10 @@ dialog = {
 										},
 										["enabled"] = {
 											[1] = true,
+										},
+										["pictureFile"] = {
+										},
+										["skinName"] = {
 										},
 										["text"] = {
 											[1] = "$ALLIES",
@@ -237,10 +252,17 @@ dialog = {
 										["enabled"] = {
 											[1] = true,
 										},
+										["pictureFile"] = {
+										},
+										["skinName"] = {
+										},
 										["sound"] = {
 										},
 										["state"] = {
 											[1] = false,
+										},
+										["tabOrder"] = {
+											[1] = 0,
 										},
 										["text"] = {
 											[1] = "",
@@ -351,6 +373,10 @@ dialog = {
 									[1] = {
 									},
 								},
+								["pictureFile"] = {
+								},
+								["skinName"] = {
+								},
 								["text"] = {
 									[1] = "panel0",
 								},
@@ -385,6 +411,10 @@ dialog = {
 								},
 								["enabled"] = {
 									[1] = true,
+								},
+								["pictureFile"] = {
+								},
+								["skinName"] = {
 								},
 								["text"] = {
 									[1] = "$MESSAGE",
@@ -438,6 +468,10 @@ dialog = {
 							[1] = {
 							},
 						},
+						["pictureFile"] = {
+						},
+						["skinName"] = {
+						},
 						["text"] = {
 							[1] = "panel0",
 						},
@@ -477,6 +511,10 @@ dialog = {
 							[1] = {
 							},
 						},
+						["pictureFile"] = {
+						},
+						["skinName"] = {
+						},
 						["text"] = {
 							[1] = "panel0",
 						},
@@ -515,11 +553,15 @@ dialog = {
 						["pageStep"] = {
 							[1] = 10,
 						},
+						["pictureFile"] = {
+						},
 						["range"] = {
 							[1] = {
 								["max"] = 100,
 								["min"] = 0,
 							},
+						},
+						["skinName"] = {
 						},
 						["step"] = {
 							[1] = 1,
@@ -567,6 +609,10 @@ dialog = {
 					[1] = {
 					},
 				},
+				["pictureFile"] = {
+				},
+				["skinName"] = {
+				},
 				["text"] = {
 					[1] = "panel0",
 				},
@@ -602,7 +648,14 @@ dialog = {
 				["enabled"] = {
 					[1] = true,
 				},
+				["pictureFile"] = {
+				},
+				["skinName"] = {
+				},
 				["sound"] = {
+				},
+				["tabOrder"] = {
+					[1] = 0,
 				},
 				["text"] = {
 					[1] = "",
@@ -679,7 +732,14 @@ dialog = {
 						["enabled"] = {
 							[1] = true,
 						},
+						["pictureFile"] = {
+						},
+						["skinName"] = {
+						},
 						["sound"] = {
+						},
+						["tabOrder"] = {
+							[1] = 0,
 						},
 						["text"] = {
 							[1] = "",
@@ -766,8 +826,15 @@ dialog = {
 						["password"] = {
 							[1] = false,
 						},
+						["pictureFile"] = {
+						},
 						["readOnly"] = {
 							[1] = true,
+						},
+						["skinName"] = {
+						},
+						["tabOrder"] = {
+							[1] = 0,
 						},
 						["text"] = {
 							[1] = "eBlueText",
@@ -827,9 +894,9 @@ dialog = {
 								[2] = {
 									["text"] = {
 										["color"] = {
-											["b"] = 0.94901960784314,
-											["g"] = 0.36078431372549,
-											["r"] = 0,
+											["b"] = 0.85882352941176,
+											["g"] = 0.031372549019608,
+											["r"] = 0.031372549019608,
 										},
 										["horzAlign"] = {
 											["type"] = "min",
@@ -871,8 +938,15 @@ dialog = {
 						["password"] = {
 							[1] = false,
 						},
+						["pictureFile"] = {
+						},
 						["readOnly"] = {
 							[1] = true,
+						},
+						["skinName"] = {
+						},
+						["tabOrder"] = {
+							[1] = 0,
 						},
 						["text"] = {
 							[1] = "eRedText",
@@ -935,9 +1009,9 @@ dialog = {
 								[2] = {
 									["text"] = {
 										["color"] = {
-											["b"] = 0.082352941176471,
-											["g"] = 0.14117647058824,
-											["r"] = 0.72549019607843,
+											["b"] = 0.31764705882353,
+											["g"] = 0.31764705882353,
+											["r"] = 0.9921568627451,
 										},
 										["horzAlign"] = {
 											["type"] = "min",
@@ -979,8 +1053,15 @@ dialog = {
 						["password"] = {
 							[1] = false,
 						},
+						["pictureFile"] = {
+						},
 						["readOnly"] = {
 							[1] = true,
+						},
+						["skinName"] = {
+						},
+						["tabOrder"] = {
+							[1] = 0,
 						},
 						["text"] = {
 							[1] = "eWhiteText",
@@ -1100,8 +1181,15 @@ dialog = {
 						["password"] = {
 							[1] = false,
 						},
+						["pictureFile"] = {
+						},
 						["readOnly"] = {
 							[1] = true,
+						},
+						["skinName"] = {
+						},
+						["tabOrder"] = {
+							[1] = 0,
 						},
 						["text"] = {
 							[1] = "eYellowText",
@@ -1226,6 +1314,10 @@ dialog = {
 							[1] = {
 							},
 						},
+						["pictureFile"] = {
+						},
+						["skinName"] = {
+						},
 						["text"] = {
 							[1] = "Panel1",
 						},
@@ -1264,6 +1356,10 @@ dialog = {
 						["layout"] = {
 							[1] = {
 							},
+						},
+						["pictureFile"] = {
+						},
+						["skinName"] = {
 						},
 						["text"] = {
 							[1] = "panel0",
@@ -1314,6 +1410,10 @@ dialog = {
 						["enabled"] = {
 							[1] = true,
 						},
+						["pictureFile"] = {
+						},
+						["skinName"] = {
+						},
 						["text"] = {
 							[1] = "Static2",
 						},
@@ -1337,9 +1437,9 @@ dialog = {
 								[1] = {
 									["text"] = {
 										["color"] = {
-											["b"] = 0.94901960784314,
-											["g"] = 0.36078431372549,
-											["r"] = 0,
+											["b"] = 0.85882352941176,
+											["g"] = 0.031372549019608,
+											["r"] = 0.031372549019608,
 										},
 										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
 										["lineHeight"] = 0,
@@ -1364,6 +1464,10 @@ dialog = {
 						},
 						["enabled"] = {
 							[1] = true,
+						},
+						["pictureFile"] = {
+						},
+						["skinName"] = {
 						},
 						["text"] = {
 							[1] = "$ALL",
@@ -1415,6 +1519,10 @@ dialog = {
 						},
 						["enabled"] = {
 							[1] = true,
+						},
+						["pictureFile"] = {
+						},
+						["skinName"] = {
 						},
 						["text"] = {
 							[1] = "$ALLIES",
@@ -1470,6 +1578,10 @@ dialog = {
 						["enabled"] = {
 							[1] = true,
 						},
+						["pictureFile"] = {
+						},
+						["skinName"] = {
+						},
 						["text"] = {
 							[1] = "sOptValue",
 						},
@@ -1514,6 +1626,10 @@ dialog = {
 						["enabled"] = {
 							[1] = true,
 						},
+						["pictureFile"] = {
+						},
+						["skinName"] = {
+						},
 						["text"] = {
 							[1] = "Static1",
 						},
@@ -1537,9 +1653,9 @@ dialog = {
 								[1] = {
 									["text"] = {
 										["color"] = {
-											["b"] = 0.082352941176471,
-											["g"] = 0.14117647058824,
-											["r"] = 0.72549019607843,
+											["b"] = 0.31764705882353,
+											["g"] = 0.31764705882353,
+											["r"] = 0.9921568627451,
 										},
 										["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
 										["lineHeight"] = 0,
@@ -1564,6 +1680,10 @@ dialog = {
 						},
 						["enabled"] = {
 							[1] = true,
+						},
+						["pictureFile"] = {
+						},
+						["skinName"] = {
 						},
 						["text"] = {
 							[1] = "sSelAll",
@@ -1615,6 +1735,10 @@ dialog = {
 						},
 						["enabled"] = {
 							[1] = true,
+						},
+						["pictureFile"] = {
+						},
+						["skinName"] = {
 						},
 						["text"] = {
 							[1] = "$ALLIES",
@@ -1670,6 +1794,10 @@ dialog = {
 						["enabled"] = {
 							[1] = true,
 						},
+						["pictureFile"] = {
+						},
+						["skinName"] = {
+						},
 						["text"] = {
 							[1] = "Static3",
 						},
@@ -1720,6 +1848,10 @@ dialog = {
 						},
 						["enabled"] = {
 							[1] = true,
+						},
+						["pictureFile"] = {
+						},
+						["skinName"] = {
 						},
 						["text"] = {
 							[1] = "static0",
@@ -1775,6 +1907,10 @@ dialog = {
 					[1] = {
 					},
 				},
+				["pictureFile"] = {
+				},
+				["skinName"] = {
+				},
 				["text"] = {
 					[1] = "panel0",
 				},
@@ -1823,6 +1959,11 @@ dialog = {
 		},
 		["modal"] = {
 			[1] = false,
+		},
+		["offscreen"] = {
+			[1] = false,
+		},
+		["skinName"] = {
 		},
 		["text"] = {
 			[1] = "$chat",
