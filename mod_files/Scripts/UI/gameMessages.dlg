@@ -924,6 +924,64 @@ dialog = {
 			},
 			["type"] = "Static",
 		},
+		["sMain_High"] = {
+			["children"] = {
+			},
+			["params"] = {
+				["bounds"] = {
+					[1] = {
+						["h"] = 28,
+						["w"] = 61,
+						["x"] = 25,
+						["y"] = 3,
+					},
+				},
+				["enabled"] = {
+					[1] = true,
+				},
+				["pictureFile"] = {
+				},
+				["skinName"] = {
+				},
+				["text"] = {
+					[1] = "main:",
+				},
+				["tooltip"] = {
+					[1] = "",
+				},
+				["visible"] = {
+					[1] = true,
+				},
+				["zindex"] = {
+					[1] = 0,
+				},
+			},
+			["skin"] = {
+				["params"] = {
+					["name"] = "staticSkin",
+				},
+				["states"] = {
+					["released"] = {
+						[1] = {
+							["bkg"] = {
+								["center_center"] = {
+									["a"] = 0.51764705882353,
+									["b"] = 0,
+									["g"] = 0,
+									["r"] = 0,
+								},
+							},
+							["text"] = {
+								["font"] = "DejaVuLGCSansMono.ttf",
+								["fontSize"] = 20,
+								["lineHeight"] = 0,
+							},
+						},
+					},
+				},
+			},
+			["type"] = "Static",
+		},
 		["sPause"] = {
 			["children"] = {
 			},
