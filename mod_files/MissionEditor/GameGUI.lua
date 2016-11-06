@@ -98,6 +98,7 @@ local i18n 				= require('i18n')
 local query 				= require('mul_query')
 local wait_query        = require('mul_wait_query')
 local MeSettings				= require('MeSettings')
+local wait_screen     = require('me_wait_screen')
 
 controlRequest = require('mul_controlRequest')
 
@@ -130,18 +131,19 @@ function onMissionLoadEnd()
 end
 
 function onShowRadioMenu(a_h)
-print("------- onShowRadioMenu------",a_h)
+--print("------- onShowRadioMenu------",a_h)
     gameMessages.setOffsetLentaTrigger(a_h)
 end
 
 
-function RPC.method.onCustomEvent(sender_id, eventName)
-    --print("---RPC.method.onCustomEvent----",sender_id, eventName, arg1,arg2,arg3)
-    Chat.onGameEvent(eventName,sender_id) 
+function RPC.method.onCustomEvent(sender_id, eventName, player_id)
+    --print("---RPC.method.onCustomEvent----",sender_id, eventName, player_id,arg2,arg3)
+    Chat.onGameEvent(eventName,player_id) 
 end
 
 function RPC.method.onPrtScn(sender_id, ...)
-    RPC.method.onCustomEvent(sender_id, "screenshot") -- locally
+    --print("---RPC.method.onPrtScn----",sender_id, arg1,arg2,arg3)
+    RPC.method.onCustomEvent(sender_id, "screenshot", sender_id) -- locally
     RPC.sendEvent(0, "onCustomEvent", "screenshot", sender_id) -- to everybody else
 end
 
@@ -210,11 +212,16 @@ function onChatShowHide()
     end
 end
 
+-- used in onSimulationStart, onSimulationStop and onGameEvent
+local _serverSettings = nil
+
 function onSimulationStart()
     print("------- onSimulationStart------",DCS.getPause(),DCS.isMultiplayer(),DCS.isTrackPlaying())
 
+    wait_screen.showSplash(false)
     gameMessages.show()
-    if (DCS.isMultiplayer() == true) then        
+    if (DCS.isMultiplayer() == true) then
+	_serverSettings = net.get_server_settings()
         Select_role.onSimulationStart() 
         if not _OLD_NET_GUI and DCS.isTrackPlaying() == false then
             Select_role.show(true)
@@ -263,15 +270,48 @@ function onSimulationFrame()
     gameMessages.updateAnimations()
 end 
 
+
+local event2setting = {
+    ['crash'] = 'event_Crash',
+    ['eject'] = 'event_Ejecting',
+    ['takeoff'] = 'event_Takeoff',
+    ['landing'] = 'event_Takeoff',
+    ['kill'] = 'event_Kill',
+    ['self_kill'] = 'event_Kill',
+    ['pilot_death'] = 'event_Kill',
+    ['change_slot'] = 'event_Role',
+    ['connect'] = 'event_Connect',
+    ['disconnect'] = 'event_Connect',
+    ['friendly_fire'] = nil,
+    ['screenshot'] = nil,
+}
+
+-- events are filtered on the server only, because on clients they are filtered by the C++ code.
+local function show_event(eventName)
+    if _serverSettings then
+        local settingName = event2setting[eventName]
+        if settingName then
+            return _serverSettings.advanced[settingName]
+        end
+    end
+    return true
+end
+
 function onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7) 
-    print("---onGameEvent(eventName)-----",eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7) 
-    Chat.onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7) 
+    print("---onGameEvent(eventName)-----",eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+    if show_event(eventName) then
+        Chat.onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7) 
+    end
 end
 
 function onShowPool()
 print("---onShowPool()----")
     if PlayersPool.isVisible() ~= true then
-        PlayersPool.show(true)
+        if Select_role.getVisible() == true then 
+            PlayersPool.show(true, true)
+        else
+            PlayersPool.show(true)
+        end    
     else
         PlayersPool.show(false)
     end
@@ -279,9 +319,8 @@ end
 
 function onSimulationEsc()
     if (DCS.isMultiplayer() == true) and (DCS.isTrackPlaying() == false) then
-        if Select_role.getVisible() == true then
-            Select_role.show(false)
-			DCS.setViewPause(false)
+        if Select_role.getVisible() == true then            
+            Select_role.onEsc()			
         else
             if GameMenu.getVisible() == true then
                 GameMenu.hide()  
@@ -379,17 +418,20 @@ end
 function onSimulationStop()
     Chat.show(false)
     controlRequest.show(false)
+    gameMessages.hide()
+    _serverSettings = nil
     print("----onSimulationStop---")
 end
 
 function onNetDisconnect(reason, code)
-print("----onNetDisconnect---",reason, code)
+print("----onNetDisconnect---",reason, code)    
     local msg = Chat.getMsgByCode(code)
 
     if reason then
         msg = msg.."\n\n"..reason
     end    
  
+    wait_screen.showSplash(false)
     net.stop_network()   
     Chat.show(false)
     PlayersPool.show(false)
