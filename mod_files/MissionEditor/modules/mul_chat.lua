@@ -43,7 +43,12 @@ cdata =
     player      = _("player_chat","player"),
     chat        = _("Chat"),
     
+    MissionIsOver = _("Mission is over."),
 }
+
+if base.LOFAC then
+    cdata.MissionIsOver = _('Mission is over.-LOFAC')
+end
 
 local bCreated = false
 local listMessages = {}
@@ -249,7 +254,7 @@ function onShiftTab()
 end
 
 function onTab()
---base.print("---onTab---",getMode(),getAll()) 
+base.print("---onTab---",getMode(),getAll()) 
     if (getMode() ~= mode.read) then
         setMode(mode.read)
     else
@@ -316,7 +321,7 @@ function resizeEditMessage()
     
     testE:setText(text)
     local newW, newH = testE:calcSize()  
-    base.print("---newW, newH =", newH)
+
     eMessage:setBounds(eMx,eMy,eMw,newH)
     
     local x,y,w,h = pBtn:getBounds()
@@ -509,7 +514,6 @@ function setVisible(b)
 end
 
 function setMode(a_mode)
-
     modeCur = a_mode 
     
     if window == nil or bHideWin == true then
@@ -571,6 +575,9 @@ function setMode(a_mode)
         DCS.banKeyboard(true)
         --print("---banKeyboard(true)----")
         window:setSkin(Skin.windowSkinChatWrite())
+		
+		-- эти комбинации должны соответствоать комбинациям в профиле инпута
+		-- LockOnExe\Config\Input\UiLayer\keyboard\default.lua
         window:addHotKeyCallback('Shift+Tab', onShiftTab)
         window:addHotKeyCallback('Ctrl+Tab', onCtrlTab)
         window:addHotKeyCallback('Tab', onTab)
@@ -665,12 +672,16 @@ function onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7)
         onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("ejected"),getPlayerInfo(arg1),keys.getDisplayName(unitType)))
     elseif eventName == "takeoff" then
         local unitType = slotByUnitId[arg2].type
-        onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("took off from").." %s",getPlayerInfo(arg1),keys.getDisplayName(unitType),_(arg3)))
+        if arg3 ~= nil and arg3 ~= "" and arg3 ~= " " then
+            onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("took off from").." %s",getPlayerInfo(arg1),keys.getDisplayName(unitType),_(arg3)))
+        else
+            onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("took off from ground"),getPlayerInfo(arg1),keys.getDisplayName(unitType)))
+        end
     elseif eventName == "landing" then
         local unitType = slotByUnitId[arg2].type
         onChatMessage(base.string.format("%s ".._("in_chat", "in").." %s ".._("landed at").." %s",getPlayerInfo(arg1),keys.getDisplayName(unitType),_(arg3)))
     elseif eventName == "mission_end" then
-        onChatMessage(base.string.format(_("Mission is over.")))
+        onChatMessage(cdata.MissionIsOver)
         if DCS.isServer() == true then
             net.load_next_mission() 
         end            
