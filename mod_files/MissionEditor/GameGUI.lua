@@ -362,37 +362,24 @@ end
 
 function onShowChatAll()
 print("----onShowChatAll()----",DCS.isMultiplayer()) 
-	onShowChatRead()
-	return
-	--[[
     if (DCS.isMultiplayer() == true) then  
 		Chat.setAll(false)
 		Chat.setMode(Chat.mode.write)
         Chat.show(true)
     else
         Chat.show(false)
-    end]]
+    end
 end
 
 function onShowChatTeam()
 print("----onShowChatTeam()----",DCS.isMultiplayer())
-	onShowChatRead()
-	return
-	--[[
-    if (DCS.isMultiplayer() == true) then    
-        Chat.show(true)
-    else
-        Chat.show(false)
-    end]]
+	onShowChatAll()
 end
 
 function onShowChatRead()
 print("----onShowChatRead()----",DCS.isMultiplayer())
-	if (Chat.chatJustClosed()) then
-		return
-	end
     if (DCS.isMultiplayer() == true) then
-		if (Chat.getMode() ~= Chat.mode.write) and not Chat.chatJustClosed() then
+		if (Chat.getMode() ~= Chat.mode.write) then
 			Chat.setAll(true)
 			Chat.setMode(Chat.mode.write)
 		elseif Chat.getAll() == false then
