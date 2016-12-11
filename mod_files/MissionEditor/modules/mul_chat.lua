@@ -1,11 +1,10 @@
 local base = _G
 
-
-
 module('mul_chat')
 
 local require       	= base.require
 local pairs         	= base.pairs
+local ipairs         	= base.ipairs
 local table         	= base.table
 local math          	= base.math
 local loadfile      	= base.loadfile
@@ -32,6 +31,7 @@ local lfs 				= require('lfs')
 local Skin				= require('Skin')
 local ListBoxItem       = require('ListBoxItem')
 local keys              = require('mul_keys')
+local Input             = require('Input')
 
 i18n.setup(_M)
 
@@ -52,30 +52,69 @@ if base.LOFAC then
     cdata.MissionIsOver = _('Mission is over.-LOFAC')
 end
 
-local bCreated = false
-local listMessages = {}
-
 mode = {       -- используется из других модулей
     min = "min",
     read = "read",
     write = "write",
 }
-local modeCur = mode.min
-local noReadMsg = 0
-local curValueWheel = 0
-local newMsg = false
-local bHideWin = false
-local slotByUnitId = {}
-local chatPos = {} 
-local listStatics = {}
 
-local bQueryEnable = true
+local bCreated			= false
+local listMessages		= {}
+local modeCur			= mode.min
+local noReadMsg			= 0
+local curValueWheel		= 0
+local newMsg			= false
+local bHideWin			= false
+local slotByUnitId		= {}
+local chatPos			= {} 
+local listStatics		= {}
+
+local bQueryEnable		= true
+local keyboardLocked	= false
 
 -------------------------------------------------------------------------------
 -- 
+
+local function lockKeyboardInput(lock)
+	if lock then
+		if not keyboardLocked then
+			-- блокируем все кнопки клавиатуры, 
+			-- кроме кнопок управления чатом
+			local keyboardEvents	= Input.getDeviceKeys(Input.getKeyboardDeviceName())
+			local inputActions		= Input.getEnvTable().Actions
+			
+			local removeCommandEvents = function(commandEvents)
+				for i, commandEvent in ipairs(commandEvents) do
+					-- из массива удаляем элементы с конца
+					for j = #keyboardEvents, 1, -1 do
+						if keyboardEvents[j] == commandEvent then
+							table.remove(keyboardEvents, j)
+							
+							break
+						end
+					end
+				end	
+			end
+			
+			removeCommandEvents(Input.getUiLayerCommandKeyboardKeys(inputActions.iCommandChat))
+			removeCommandEvents(Input.getUiLayerCommandKeyboardKeys(inputActions.iCommandAllChat))
+			removeCommandEvents(Input.getUiLayerCommandKeyboardKeys(inputActions.iCommandFriendlyChat))
+			removeCommandEvents(Input.getUiLayerCommandKeyboardKeys(inputActions.iCommandChatShowHide))
+			
+			DCS.lockKeyboardInput(keyboardEvents)
+			keyboardLocked = true
+		end
+	else
+		if keyboardLocked then
+			DCS.unlockKeyboardInput()
+			keyboardLocked = false
+		end
+	end	
+end
+
 function create()
     window = DialogLoader.spawnDialogFromFile(base.dialogsDir .. 'mul_chat.dlg', cdata)
-
+	
     box         = window.Box
     pNoVisible  = window.pNoVisible
     pDown       = box.pDown
@@ -235,34 +274,34 @@ function updateSlots()
     
 end
 
-function onCtrlTab()   
---base.print("---onCtrlTab---",getMode(),getAll()) 
-    if (getMode() == mode.write) and (getAll() == false) then
-        setMode(mode.min)  
-    else
-        setAll(false)
-        setMode(mode.write)  
-    end
-end
+-- function onCtrlTab()   
+-- --base.print("---onCtrlTab---",getMode(),getAll()) 
+    -- if (getMode() == mode.write) and (getAll() == false) then
+        -- setMode(mode.min)  
+    -- else
+        -- setAll(false)
+        -- setMode(mode.write)  
+    -- end
+-- end
 
-function onShiftTab()
---base.print("---onShiftTab---",getMode(),getAll())
-    if (getMode() == mode.write) and (getAll() == true) then
-        setMode(mode.min)
-    else
-        setAll(true)
-        setMode(mode.write)            
-    end 
-end
+-- function onShiftTab()
+-- --base.print("---onShiftTab---",getMode(),getAll())
+    -- if (getMode() == mode.write) and (getAll() == true) then
+        -- setMode(mode.min)
+    -- else
+        -- setAll(true)
+        -- setMode(mode.write)            
+    -- end 
+-- end
 
-function onTab()
-base.print("---onTab---",getMode(),getAll()) 
-    if (getMode() ~= mode.read) then
-        setMode(mode.read)
-    else
-        setMode(mode.min)    
-    end
-end
+-- function onTab()
+-- base.print("---onTab---",getMode(),getAll()) 
+    -- if (getMode() ~= mode.read) then
+        -- setMode(mode.read)
+    -- else
+        -- setMode(mode.min)    
+    -- end
+-- end
 
 
     
@@ -522,21 +561,15 @@ function setMode(a_mode)
         return
     end
     if modeCur == "min" then
+		window:setVisible(false)
         box:setVisible(false)
         setVisibleBtnMail(true)
         updateNoReadMsg()
         box:setSkin(skinModeRead)
         eMessage:setFocused(false)
-        DCS.banKeyboard(false)
-        --print("---banKeyboard(false)----")
+        lockKeyboardInput(false)
         window:setSkin(Skin.windowSkinChatMin())
-        window:removeHotKeyCallback('Shift+Tab', onShiftTab)
-        window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
-        window:removeHotKeyCallback('Tab', onTab) 
-    --    setVisible(false)        
-    --    window:setHasCursor(false)
-        setVisible(true)
-        --window:setBounds(0, h/2-200, 36, 55)        
+		window:setHasCursor(false)
         window:setSize(48, 113)
         btnMail:setBounds(12, 0, 32, 73)
         if bQueryEnable then
@@ -547,6 +580,7 @@ function setMode(a_mode)
     end
     
     if modeCur == "read" then
+		window:setVisible(false)
         box:setVisible(true)
         setVisibleBtnMail(false)
         box:setSkin(skinModeRead)
@@ -554,40 +588,24 @@ function setMode(a_mode)
         vsScroll:setVisible(false)
         pDown:setVisible(false)
         eMessage:setFocused(false)
-        DCS.banKeyboard(false)
-        --print("---banKeyboard(false)----")
+        lockKeyboardInput(false)
         window:setSkin(Skin.windowSkinChatMin())
-        window:removeHotKeyCallback('Shift+Tab', onShiftTab)
-        window:removeHotKeyCallback('Ctrl+Tab', onCtrlTab)
-        window:removeHotKeyCallback('Tab', onTab)
-    --    setVisible(false)
-    --    window:setHasCursor(false)
-        setVisible(true)
-        --window:setBounds(0, h/2-200, 360, 455)
+		window:setHasCursor(false)
         window:setSize(480, 607)
     end
     
     if modeCur == "write" then
+		window:setVisible(false)
         box:setVisible(true)
         setVisibleBtnMail(false)
         box:setSkin(skinModeWrite)
         noReadMsg = 0
         vsScroll:setVisible(true)
         pDown:setVisible(true)        
-        DCS.banKeyboard(true)
-        --print("---banKeyboard(true)----")
+        lockKeyboardInput(true)
         window:setSkin(Skin.windowSkinChatWrite())
-		
-		-- эти комбинации должны соответствоать комбинациям в профиле инпута
-		-- LockOnExe\Config\Input\UiLayer\keyboard\default.lua
-        window:addHotKeyCallback('Shift+Tab', onShiftTab)
-        window:addHotKeyCallback('Ctrl+Tab', onCtrlTab)
-        window:addHotKeyCallback('Tab', onTab)
-    --    setVisible(false)
-    --    window:setHasCursor(true)
-        setVisible(true)
+		window:setHasCursor(true)
         eMessage:setFocused(true)
-        --window:setBounds(0, h/2-200, 360, 455)
         window:setSize(480, 607)
     end    
     updateListM()
