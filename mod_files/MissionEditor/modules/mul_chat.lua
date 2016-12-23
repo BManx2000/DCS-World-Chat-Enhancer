@@ -75,41 +75,43 @@ local keyboardLocked	= false
 -------------------------------------------------------------------------------
 -- 
 
-local function lockKeyboardInput(lock)
-	if lock then
-		if not keyboardLocked then
-			-- блокируем все кнопки клавиатуры, 
-			-- кроме кнопок управления чатом
-			local keyboardEvents	= Input.getDeviceKeys(Input.getKeyboardDeviceName())
-			local inputActions		= Input.getEnvTable().Actions
-			
-			local removeCommandEvents = function(commandEvents)
-				for i, commandEvent in ipairs(commandEvents) do
-					-- из массива удаляем элементы с конца
-					for j = #keyboardEvents, 1, -1 do
-						if keyboardEvents[j] == commandEvent then
-							table.remove(keyboardEvents, j)
-							
-							break
-						end
-					end
-				end	
+local function unlockKeyboardInput(releaseKeyboardKeys)
+	if keyboardLocked then
+		DCS.unlockKeyboardInput(releaseKeyboardKeys)
+		keyboardLocked = false
+	end
+end
+
+local function lockKeyboardInput()
+	if keyboardLocked then
+		return
+	end
+
+	-- блокируем все кнопки клавиатуры, 
+	-- кроме кнопок управления чатом
+	local keyboardEvents	= Input.getDeviceKeys(Input.getKeyboardDeviceName())
+	local inputActions		= Input.getEnvTable().Actions
+	
+	local removeCommandEvents = function(commandEvents)
+		for i, commandEvent in ipairs(commandEvents) do
+			-- из массива удаляем элементы с конца
+			for j = #keyboardEvents, 1, -1 do
+				if keyboardEvents[j] == commandEvent then
+					table.remove(keyboardEvents, j)
+					
+					break
+				end
 			end
-			
-			removeCommandEvents(Input.getUiLayerCommandKeyboardKeys(inputActions.iCommandChat))
-			removeCommandEvents(Input.getUiLayerCommandKeyboardKeys(inputActions.iCommandAllChat))
-			removeCommandEvents(Input.getUiLayerCommandKeyboardKeys(inputActions.iCommandFriendlyChat))
-			removeCommandEvents(Input.getUiLayerCommandKeyboardKeys(inputActions.iCommandChatShowHide))
-			
-			DCS.lockKeyboardInput(keyboardEvents)
-			keyboardLocked = true
-		end
-	else
-		if keyboardLocked then
-			DCS.unlockKeyboardInput()
-			keyboardLocked = false
-		end
-	end	
+		end	
+	end
+	
+	removeCommandEvents(Input.getUiLayerCommandKeyboardKeys(inputActions.iCommandChat))
+	removeCommandEvents(Input.getUiLayerCommandKeyboardKeys(inputActions.iCommandAllChat))
+	removeCommandEvents(Input.getUiLayerCommandKeyboardKeys(inputActions.iCommandFriendlyChat))
+	removeCommandEvents(Input.getUiLayerCommandKeyboardKeys(inputActions.iCommandChatShowHide))
+	
+	DCS.lockKeyboardInput(keyboardEvents)
+	keyboardLocked = true
 end
 
 function create()
@@ -567,7 +569,7 @@ function setMode(a_mode)
         updateNoReadMsg()
         box:setSkin(skinModeRead)
         eMessage:setFocused(false)
-        lockKeyboardInput(false)
+        unlockKeyboardInput(true)
         window:setSkin(Skin.windowSkinChatMin())
 		window:setHasCursor(false)
         window:setSize(36, 85)
@@ -588,7 +590,7 @@ function setMode(a_mode)
         vsScroll:setVisible(false)
         pDown:setVisible(false)
         eMessage:setFocused(false)
-        lockKeyboardInput(false)
+        unlockKeyboardInput(false)
         window:setSkin(Skin.windowSkinChatMin())
 		window:setHasCursor(false)
         window:setSize(360, 455)
@@ -602,7 +604,7 @@ function setMode(a_mode)
         noReadMsg = 0
         vsScroll:setVisible(true)
         pDown:setVisible(true)        
-        lockKeyboardInput(true)
+        lockKeyboardInput()
         window:setSkin(Skin.windowSkinChatWrite())
 		window:setHasCursor(true)
         eMessage:setFocused(true)
