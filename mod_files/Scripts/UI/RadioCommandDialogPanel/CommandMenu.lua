@@ -547,10 +547,13 @@ function clearMenu(self)
 	self:setCaption('')
 end
 
-function closeMenu_(self)
+function closeMenu_(self) 
 	--base.print('closeMenu count'..base.tostring(#self.path))
 	self:setMainMenu()
 	self:toggleMenu(false)
+    if 	self.handler then 
+        self.handler:banMouse(false)
+    end
 end
 
 local addTimeStamp = false
