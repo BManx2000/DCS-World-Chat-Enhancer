@@ -415,7 +415,7 @@ print("----onNetDisconnect---",reason, code)
     local msg = Chat.getMsgByCode(code)
 
     if reason then
-        msg = msg.."\n\n"..reason
+        msg = msg.."\n\n".._(reason)
     end    
  
     wait_screen.showSplash(false)
