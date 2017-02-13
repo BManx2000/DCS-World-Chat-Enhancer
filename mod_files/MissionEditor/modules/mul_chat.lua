@@ -455,6 +455,7 @@ function addMessage(a_message, a_name, a_skin)
     if modeCur == "min" then
 		updateListM()
         setMode(mode.read)
+		setVisible(true)
     else
         updateListM()
     end
