@@ -99,6 +99,8 @@ local query 				= require('mul_query')
 local wait_query        = require('mul_wait_query')
 local MeSettings				= require('MeSettings')
 local wait_screen     = require('me_wait_screen')
+local OptionsDialog				= require('me_options')
+local Censorship        = require('censorship')
 
 controlRequest = require('mul_controlRequest')
 
@@ -108,7 +110,7 @@ setmetatable(dxgui, {__index = dxguiWin})
 
 
 Gui.SetupApplicationUpdateCallback()
-Gui.AddFontSearchPathes({'dxgui/skins/fonts/', tostring(os.getenv('windir')) .. '/Fonts/'})
+require('GuiFontInitializer')
 
 -- Данная функция будет вызываться на каждом кадре отрисовки GUI.
 Gui.SetUpdateCallback(UpdateManager.update)
@@ -238,6 +240,16 @@ function onSimulationStart()
         print("----onSimulationStart--releaseSeat---")
         RPC.sendEvent(net.get_server_id(), "releaseSeat", net.get_my_player_id())
         
+        if DCS.isTrackPlaying() == false then
+            local opt = DCS.getUserOptions()
+            if opt and opt.miscellaneous.chat_window_at_start ~= false then  
+                Chat.setMode(Chat.mode.read)
+                Chat.show(true)
+            end
+        else
+            BriefingDialog.showUnpauseMessage(true)
+            BriefingDialog.show()
+        end    
         return
     end
 	
@@ -298,17 +310,17 @@ local function show_event(eventName)
 end
 
 function onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7) 
-    print("---onGameEvent(eventName)-----",eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+    --print("---onGameEvent(eventName)-----",eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     if show_event(eventName) then
         Chat.onGameEvent(eventName,arg1,arg2,arg3,arg4,arg5,arg6,arg7) 
     end
 end
 
 function onShowPool()
-print("---onShowPool()----")
+--print("---onShowPool()----")
     if PlayersPool.isVisible() ~= true then
         if Select_role.getVisible() == true then 
-            PlayersPool.show(true, true)
+            PlayersPool.show(true)
         else
             PlayersPool.show(true)
         end    
@@ -346,6 +358,8 @@ function onSimulationEsc()
         ChoiceOfRoleDialog.hide()
     elseif ChoiceOfCoalitionDialog.getVisible() == true then
         ChoiceOfCoalitionDialog.hide()  
+    elseif OptionsDialog.getVisible() == true then
+        OptionsDialog.onCancel()
     else
         GameMenu.show()
         gameMessages.showPause()
@@ -361,7 +375,7 @@ function onShowMessage(a_text, a_duration)
 end
 
 function onShowChatAll()
-print("----onShowChatAll()----",DCS.isMultiplayer()) 
+--print("----onShowChatAll()----",DCS.isMultiplayer()) 
     if (DCS.isMultiplayer() == true) then  
 		Chat.setAll(false)
 		Chat.setMode(Chat.mode.write)
@@ -414,7 +428,7 @@ function onNetDisconnect(reason, code)
 print("----onNetDisconnect---",reason, code)    
     local msg = Chat.getMsgByCode(code)
 
-    if reason then
+    if reason and (code == nil or code ~= net.ERR_INVALID_PASSWORD) then
         msg = msg.."\n\n".._(reason)
     end    
  
@@ -486,7 +500,15 @@ function onRadioCommand(command_message)
     gameMessages.onRadioCommand(command_message)
 end
 
+
+function onPlayerTrySendChat(playerID, msg, all) -- -> filteredMessage | "" - empty string drops the message
+   -- print("---onPlayerTrySendChat----",playerID, msg, all)
+    msg = Censorship.censor(msg)
+    return msg
+end
+
 function onChatMessage(message, from)
+--print("--GUI-onChatMessage----",message, from)
     Chat.onChatMessage(message, from)  
 end
 
@@ -516,7 +538,7 @@ function onPlayerStop(id)
 end
 
 function onPlayerChangeSlot(id)
-    print("----onPlayerChangeSlot---", id)
+    --print("----onPlayerChangeSlot---", id)
     Select_role.onPlayerChangeSlot(id)
     PlayersPool.onPlayerChangeSlot(id)
     wait_query.onPlayerChangeSlot(id)
@@ -616,109 +638,56 @@ function traverseTable(_t, _numLevels, _tabString, filename, filter)
     
 end
 
---------------------------------------------------------------------------------------------------------
--- load a user-provided script
-local userCallbackList = {
-    'onMissionLoadBegin',
-    'onMissionLoadProgress',
-    'onMissionLoadEnd',
-    'onSimulationStart',
-    'onSimulationStop',
-    'onSimulationFrame',
-    'onSimulationPause',
-    'onSimulationResume',
-    'onGameEvent',
-    'onNetConnect',
-    'onNetMissionChanged',
-    'onNetDisconnect',
-    'onPlayerConnect',
-    'onPlayerDisconnect',
-    'onPlayerStart',
-    'onPlayerStop',
-    'onPlayerChangeSlot',
-    'onPlayerTryConnect',
-    'onPlayerTrySendChat',
-    'onPlayerTryChangeSlot',
-    'onChatMessage',
-    'onShowRadioMenu',
-    'onShowPool',
-    'onShowGameMenu',
-    'onShowBriefing',
-    'onShowChatAll',
-    'onShowChatTeam',
-    'onShowChatRead',
-    'onShowMessage',
-    'onTriggerMessage',
-    'onRadioMessage',
-    'onRadioCommand',
-}
-
-local function list2map(cbList)
-    local map = {}
-	for i,v in ipairs(cbList) do
-	    map[v] = true
-	end
-	return map
-end
-
-local userCallbackMap = list2map(userCallbackList)
-
-local function isValidCallback(name, cb)
-    return userCallbackMap[name]==true and type(cb) == 'function'
-end
-
 function getPermissionToCollectStatistics()
     return MeSettings.getPermissionToCollectStatistics()
 end 
 
-local function _hook(callbackName, newHandler)
-    local prevHandler = _G[callbackName]
-    if prevHandler then
-        _G[callbackName] = function(...)
-            local res = newHandler(...)
-            if res ~= nil then return res end
-            return prevHandler(...)
-        end
-    else
-        _G[callbackName] = newHandler
-    end
+local classifier
+
+if not me_db then
+	OptionsData = require('Options.Data')
+	OptionsData.load({})
+
+	me_db = require('me_db_api')
+	me_db.create() -- чтение и обработка БД редактора
+
+	-- база данных по плагинам загружается в me_db_api
+	-- после ее загрузки можно загрузить настройки для плагинов
+	OptionsData.loadPluginsDb()
 end
 
-function DCS.setUserCallbacks(cb_table)
-    for name,func in pairs(cb_table) do
-		if isValidCallback(name, func) then
-            _hook(name, func)
-            print('    Hooked ' .. name)
-		else
-            print('    Rejected ' .. name)
-		end
-    end
-end
-
-local function loadUserScripts(userScriptDir)
-    local userScripts = {}
-    for fn in lfs.dir(userScriptDir) do
-        if string.find(fn, '.*GameGUI%.lua') then
-            table.insert(userScripts, fn)
+function getUnitIconByType(a_type)
+    local iconName
+    local rotatable
+	local mainPath = mainPath or 'MissionEditor/'
+    
+    if classifier == nil then
+        local filename = mainPath .. 'data/NewMap/Classifier.lua'
+        local func, err = loadfile(filename)
+        
+        if func then
+            local imagesPath = mainPath .. 'data/NewMap/images/themes/' .. OptionsData.getIconsTheme() .. '/' 	
+            classifier = func(imagesPath,i18n.ptranslate)
         end
     end
-    table.sort(userScripts)
-    -- actually load the stuff
-    for i,fn in ipairs(userScripts) do
-        local env = {}
-        setmetatable(env, { __index = _G })
-        local u, err = loadfile(userScriptDir .. '/' .. fn)
-        if u then
-            setfenv(u, env)
-            ok, err = pcall(u)
-            if ok then
-                print('Loaded user script '..fn)
-            else
-                print('Failed to exec user script '..fn..': '..err)
+
+    if classifier and classifier.objects then
+        local classKey = me_db.getClassKeyByType(a_type)
+        --print('a_type, ClassKey:', a_type, classKey)
+        if classKey then
+            local classInfo = classifier.objects[classKey]
+            if classInfo then
+                rotatable = classInfo.rotatable or false
+                iconName = classInfo.file
             end
-        else
-            print('Failed to load user script '..fn..': '..err)
         end
     end
+  
+    return iconName, rotatable
 end
-loadUserScripts(lfs.writedir() .. 'Scripts')
+
+---- Insert your stuff ABOVE this line.
+
+-- This MUST be the last line:
+dofile('MissionEditor/loadUserScripts.lua')
+--- EOF
