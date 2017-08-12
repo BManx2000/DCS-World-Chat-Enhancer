@@ -102,6 +102,7 @@ local wait_screen     = require('me_wait_screen')
 local OptionsDialog				= require('me_options')
 local Censorship        = require('censorship')
 
+
 controlRequest = require('mul_controlRequest')
 
 local _ = i18n.ptranslate
@@ -116,6 +117,9 @@ require('GuiFontInitializer')
 Gui.SetUpdateCallback(UpdateManager.update)
 
 countCoalitions = 0
+isDisconnect = false
+msgDisconnect = nil
+codeDisconnect = nil
 
 function onMissionLoadBegin()
     progressBar.show()
@@ -223,6 +227,9 @@ function onSimulationStart()
     wait_screen.showSplash(false)
     gameMessages.show()
     if (DCS.isMultiplayer() == true) then
+		isDisconnect = false
+		msgDisconnect = nil
+		codeDisconnect = nil
 	_serverSettings = net.get_server_settings()
         Select_role.onSimulationStart() 
         if not _OLD_NET_GUI and DCS.isTrackPlaying() == false then
@@ -421,7 +428,15 @@ function onSimulationStop()
     controlRequest.show(false)
     gameMessages.hide()
     _serverSettings = nil
-    print("----onSimulationStop---")
+    print("----onSimulationStop---",isDisconnect,msgDisconnect,codeDisconnect)
+	
+	if isDisconnect == true then
+		onShowMainInterface()
+		
+		if codeDisconnect ~= net.ERR_THATS_OKAY then
+		--	MsgWindow.warning(msgDisconnect, _("DISCONNECT"), _("OK")):show()
+end
+	end
 end
 
 function onNetDisconnect(reason, code)
@@ -439,12 +454,11 @@ print("----onNetDisconnect---",reason, code)
     Select_role.show(false)
     query.show(false)
     wait_query.show(false)
-    onShowMainInterface()
     
-    if code ~= net.ERR_THATS_OKAY then
-        MsgWindow.warning(msg, _("DISCONNECT"), _("OK")):show()
+	isDisconnect = true  
+	msgDisconnect = msg	
+	codeDisconnect = code
     end
-end 
 
 function onSimulationResume()
     print("----onSimulationResume---")
@@ -642,6 +656,142 @@ function getPermissionToCollectStatistics()
     return MeSettings.getPermissionToCollectStatistics()
 end 
 
+--------------------------------------------------------------------------------------------------------
+-- load a user-provided script
+local userCallbackList = {
+    'onMissionLoadBegin',
+    'onMissionLoadProgress',
+    'onMissionLoadEnd',
+    'onSimulationStart',
+    'onSimulationStop',
+    'onSimulationFrame',
+    'onSimulationPause',
+    'onSimulationResume',
+    'onGameEvent',
+    'onNetConnect',
+    'onNetMissionChanged',
+    'onNetDisconnect',
+    'onPlayerConnect',
+    'onPlayerDisconnect',
+    'onPlayerStart',
+    'onPlayerStop',
+    'onPlayerChangeSlot',
+    'onPlayerTryConnect',
+    'onPlayerTrySendChat',
+    'onPlayerTryChangeSlot',
+    'onChatMessage',
+    'onShowRadioMenu',
+    'onShowPool',
+    'onShowGameMenu',
+    'onShowBriefing',
+    'onShowChatAll',
+    'onShowChatTeam',
+    'onShowChatRead',
+    'onShowMessage',
+    'onTriggerMessage',
+    'onRadioMessage',
+    'onRadioCommand',
+}
+
+local function list2map(cbList)
+    local map = {}
+	for i,v in ipairs(cbList) do
+	    map[v] = true
+	end
+	return map
+end
+
+local userCallbackMap = list2map(userCallbackList)
+local userCallbacks = {} -- array of cb_tables
+
+local function isValidCallback(name, cb)
+    return userCallbackMap[name]==true and type(cb) == 'function'
+end
+
+local function filterUserCallbacks(cb_table)
+    local filtered = {}
+    local ok = false
+    for name,func in pairs(cb_table) do
+        if isValidCallback(name, func) then
+            print('    Hooked ' .. name)
+            filtered[name] = func
+            ok = true
+        else
+            print('    Rejected ' .. name)
+        end
+    end
+    return ok, filtered
+end
+
+function DCS.setUserCallbacks(cb_table)
+    local ok, cb = filterUserCallbacks(cb_table)
+    -- in theory we could just do 'if #cb > 0' but it does not work this way in 5.1
+    if ok then
+        table.insert(userCallbacks, cb)
+    end
+end
+
+function DCS.reloadUserScripts()
+    local userScriptDir = lfs.writedir() .. 'Scripts'
+    local userScripts = {}
+    for fn in lfs.dir(userScriptDir) do
+        if string.find(fn, '.*GameGUI%.lua') then
+            table.insert(userScripts, fn)
+        end
+    end
+    table.sort(userScripts)
+
+    -- clear all current callbacks
+    userCallbacks = {}
+
+    -- actually load the stuff
+    for i,fn in ipairs(userScripts) do
+        local env = {}
+        setmetatable(env, { __index = _G })
+        local u, err = loadfile(userScriptDir .. '/' .. fn)
+        if u then
+            setfenv(u, env)
+            local ok, err = pcall(u)
+            if ok then
+                print('Loaded user script '..fn)
+            else
+                print('Failed to exec user script '..fn..': '..err)
+            end
+        else
+            print('Failed to load user script '..fn..': '..err)
+        end
+    end
+end
+
+local function callbackHook(name, dcsHandler, ...)
+    for i = #userCallbacks, 1, -1 do -- call last-to-first
+        local cb = userCallbacks[i]
+        local h = cb[name]
+        if h then
+            local ok, res = pcall(h, ...)
+            if not ok then
+                print(name, res) -- error
+            elseif res ~= nil then
+                return res -- callback returned a result
+            end -- if not ok
+        end -- if h
+    end -- for i, cb
+    if dcsHandler then return dcsHandler(...) end
+end
+
+
+-- call only ONCE
+local function hookTheCallbacks()
+    for name, t in pairs(userCallbackMap) do
+        local dcsHandler = _G[name]
+        local hook = function(...) return callbackHook(name, dcsHandler, ...) end
+        _G[name] = hook
+    end
+end
+
+--- END of user callback stuff
+---------------------------------------------------------------------------------------
+
 local classifier
 
 if not me_db then
@@ -687,7 +837,6 @@ function getUnitIconByType(a_type)
 end
 
 ---- Insert your stuff ABOVE this line.
-
--- This MUST be the last line:
-dofile('MissionEditor/loadUserScripts.lua')
---- EOF
+-- These should be the last 2 lines:
+hookTheCallbacks()
+DCS.reloadUserScripts()
