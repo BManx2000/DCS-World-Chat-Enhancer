@@ -639,7 +639,7 @@ function getMsgByCode(code)
     elseif code == net.ERR_PROTOCOL_ERROR then
         msg = _("Protocol error")
     elseif code == net.ERR_TAINTED_CLIENT then
-        msg = _("Pure client is required")
+        msg = _("Client is tainted")
     elseif code == net.ERR_INVALID_PASSWORD then
         msg = _("Invalid password")
     elseif code == net.ERR_BANNED then
